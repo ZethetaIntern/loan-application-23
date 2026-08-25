@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 
 interface Point {
   x: number
@@ -10,83 +12,83 @@ interface SignaturePadProps {
   initialDataUrl?: string
 }
 
-const WIDTH = 640
-const HEIGHT = 220
+const WIDTH = 640;
+const HEIGHT = 220;
 
 export default function SignaturePad({ onChange, initialDataUrl }: SignaturePadProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const strokes = useRef<Point[][]>([])
-  const drawing = useRef(false)
-  const [empty, setEmpty] = useState(true)
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const strokes = useRef<Point[][]>([]);
+  const drawing = useRef(false);
+  const [empty, setEmpty] = useState(true);
 
   const redraw = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    const dpr = window.devicePixelRatio || 1
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-    ctx.clearRect(0, 0, WIDTH, HEIGHT)
-    ctx.strokeStyle = '#14201c'
-    ctx.lineWidth = 2.2
-    ctx.lineCap = 'round'
-    ctx.lineJoin = 'round'
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.strokeStyle = '#14201c';
+    ctx.lineWidth = 2.2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     for (const stroke of strokes.current) {
-      ctx.beginPath()
-      stroke.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)))
-      ctx.stroke()
+      ctx.beginPath();
+      stroke.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
+      ctx.stroke();
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const dpr = window.devicePixelRatio || 1
-    canvas.width = WIDTH * dpr
-    canvas.height = HEIGHT * dpr
-    redraw()
-  }, [redraw])
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = WIDTH * dpr;
+    canvas.height = HEIGHT * dpr;
+    redraw();
+  }, [redraw]);
 
   function toPoint(event: React.PointerEvent<HTMLCanvasElement>): Point {
-    const rect = event.currentTarget.getBoundingClientRect()
+    const rect = event.currentTarget.getBoundingClientRect();
     return {
       x: ((event.clientX - rect.left) / rect.width) * WIDTH,
       y: ((event.clientY - rect.top) / rect.height) * HEIGHT,
-    }
+    };
   }
 
   function handleDown(event: React.PointerEvent<HTMLCanvasElement>) {
-    event.currentTarget.setPointerCapture(event.pointerId)
-    drawing.current = true
-    strokes.current.push([toPoint(event)])
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drawing.current = true;
+    strokes.current.push([toPoint(event)]);
   }
 
   function handleMove(event: React.PointerEvent<HTMLCanvasElement>) {
-    if (!drawing.current) return
-    strokes.current[strokes.current.length - 1].push(toPoint(event))
-    redraw()
+    if (!drawing.current) return;
+    strokes.current[strokes.current.length - 1].push(toPoint(event));
+    redraw();
   }
 
   function handleUp() {
-    if (!drawing.current) return
-    drawing.current = false
-    setEmpty(false)
-    onChange(canvasRef.current?.toDataURL('image/png') ?? null)
+    if (!drawing.current) return;
+    drawing.current = false;
+    setEmpty(false);
+    onChange(canvasRef.current?.toDataURL('image/png') ?? null);
   }
 
   function clear() {
-    strokes.current = []
-    setEmpty(true)
-    redraw()
-    onChange(null)
+    strokes.current = [];
+    setEmpty(true);
+    redraw();
+    onChange(null);
   }
 
   function undo() {
-    strokes.current.pop()
-    const isEmpty = strokes.current.length === 0
-    setEmpty(isEmpty)
-    redraw()
-    onChange(isEmpty ? null : (canvasRef.current?.toDataURL('image/png') ?? null))
+    strokes.current.pop();
+    const isEmpty = strokes.current.length === 0;
+    setEmpty(isEmpty);
+    redraw();
+    onChange(isEmpty ? null : (canvasRef.current?.toDataURL('image/png') ?? null));
   }
 
   return (
@@ -98,7 +100,9 @@ export default function SignaturePad({ onChange, initialDataUrl }: SignaturePadP
         <canvas
           ref={canvasRef}
           data-testid="signature-canvas"
-          style={{ width: '100%', height: 'auto', aspectRatio: `${WIDTH}/${HEIGHT}`, touchAction: 'none' }}
+          style={{
+            width: '100%', height: 'auto', aspectRatio: `${WIDTH}/${HEIGHT}`, touchAction: 'none',
+          }}
           onPointerDown={handleDown}
           onPointerMove={handleMove}
           onPointerUp={handleUp}
@@ -131,5 +135,5 @@ export default function SignaturePad({ onChange, initialDataUrl }: SignaturePadP
         </button>
       </div>
     </div>
-  )
+  );
 }

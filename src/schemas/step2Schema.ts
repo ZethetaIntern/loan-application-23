@@ -1,8 +1,8 @@
-import { z } from 'zod'
-import { ageOn } from '../utils/dates'
+import { z } from 'zod';
+import { ageOn } from '../utils/dates';
 
-const NAME_REGEX = /^[A-Za-z][A-Za-z .]{1,99}$/
-const INDIAN_MOBILE = /^[6-9]\d{9}$/
+const NAME_REGEX = /^[A-Za-z][A-Za-z .]{1,99}$/;
+const INDIAN_MOBILE = /^[6-9]\d{9}$/;
 
 export const step2Schema = z
   .object({
@@ -24,15 +24,15 @@ export const step2Schema = z
       .or(z.literal('')),
   })
   .superRefine((data, ctx) => {
-    const age = ageOn(data.dateOfBirth)
+    const age = ageOn(data.dateOfBirth);
     if (Number.isNaN(age)) {
-      ctx.addIssue({ code: 'custom', path: ['dateOfBirth'], message: 'Please enter a valid date.' })
-      return
+      ctx.addIssue({ code: 'custom', path: ['dateOfBirth'], message: 'Please enter a valid date.' });
+      return;
     }
     if (age < 21 || age > 65) {
-      ctx.addIssue({ code: 'custom', path: ['dateOfBirth'], message: 'Applicant age must be between 21 and 65 years.' })
+      ctx.addIssue({ code: 'custom', path: ['dateOfBirth'], message: 'Applicant age must be between 21 and 65 years.' });
     }
     if (data.alternateMobile && data.alternateMobile === data.mobile) {
-      ctx.addIssue({ code: 'custom', path: ['alternateMobile'], message: 'Alternate mobile must differ from the primary number.' })
+      ctx.addIssue({ code: 'custom', path: ['alternateMobile'], message: 'Alternate mobile must differ from the primary number.' });
     }
-  })
+  });

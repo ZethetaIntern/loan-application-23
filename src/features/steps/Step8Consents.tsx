@@ -1,20 +1,22 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import Checkbox from '../../components/common/Checkbox'
-import { useWizard } from '../../context/WizardContext'
-import { formatRupees } from '../../utils/formatters'
-import { breakdownFor } from '../../services/emicalculator'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import Checkbox from '../../components/common/Checkbox';
+import { useWizard } from '../../context/WizardContext';
+import { formatRupees } from '../../utils/formatters';
+import { breakdownFor } from '../../services/emicalculator';
 
 type Step8 = ApplicationData['consents']
 
 export function Step8Consents() {
-  const { register, formState: { errors } } = useFormContext<Step8>()
-  const { data } = useWizard()
-  const { step1, personal, kyc, employment } = data
+  const { register, formState: { errors } } = useFormContext<Step8>();
+  const { data } = useWizard();
+  const {
+    step1, personal, kyc, employment,
+  } = data;
 
   const breakdown = step1.amount > 0 && step1.tenureMonths > 0
     ? breakdownFor(step1.loanType, step1.amount, step1.tenureMonths)
-    : null
+    : null;
 
   return (
     <div className="space-y-8">
@@ -27,7 +29,11 @@ export function Step8Consents() {
             <dt className="text-gray-500">Amount</dt>
             <dd className="font-medium">{formatRupees(step1.amount)}</dd>
             <dt className="text-gray-500">Tenure</dt>
-            <dd className="font-medium">{step1.tenureMonths} months</dd>
+            <dd className="font-medium">
+              {step1.tenureMonths}
+              {' '}
+              months
+            </dd>
             <dt className="text-gray-500">Purpose</dt>
             <dd className="font-medium">{step1.loanPurpose}</dd>
             <dt className="text-gray-500">Applicant</dt>
@@ -94,5 +100,5 @@ export function Step8Consents() {
         />
       </section>
     </div>
-  )
+  );
 }

@@ -26,8 +26,8 @@ export function RadioGroup({
   required,
   orientation = 'vertical',
 }: RadioGroupProps) {
-  const groupId = `${name}-group`
-  const errorId = `${name}-error`
+  const groupId = `${name}-group`;
+  const errorId = `${name}-error`;
   return (
     <fieldset aria-required={required || undefined} aria-describedby={error ? errorId : undefined}>
       <legend className="mb-1 text-sm font-medium text-gray-700">
@@ -41,8 +41,8 @@ export function RadioGroup({
         className={`flex ${orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}`}
       >
         {options.map((opt) => {
-          const optId = `${name}-${opt.value}`
-          const checked = value === opt.value
+          const optId = `${name}-${opt.value}`;
+          const checked = value === opt.value;
           return (
             <label
               key={opt.value}
@@ -64,11 +64,15 @@ export function RadioGroup({
               <div>
                 <span className="font-medium">{opt.label}</span>
                 {opt.description && (
-                  <span className="ml-1 text-xs text-gray-500">({opt.description})</span>
+                  <span className="ml-1 text-xs text-gray-500">
+                    (
+                    {opt.description}
+                    )
+                  </span>
                 )}
               </div>
             </label>
-          )
+          );
         })}
       </div>
       {error && (
@@ -77,5 +81,5 @@ export function RadioGroup({
         </p>
       )}
     </fieldset>
-  )
+  );
 }

@@ -1,23 +1,25 @@
-import { useFormContext } from 'react-hook-form'
-import { useState } from 'react'
-import type { ApplicationData } from '../../types/application'
-import { RadioGroup, Select, Input } from '../../components/common'
+import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import type { ApplicationData } from '../../types/application';
+import { RadioGroup, Select, Input } from '../../components/common';
 
 type Step2 = ApplicationData['personal']
 
 export function Step2Personal() {
-  const { register, watch, setValue, formState: { errors } } = useFormContext<Step2>()
-  const [emailOtp, setEmailOtp] = useState('')
-  const [mobileOtp, setMobileOtp] = useState('')
-  const emailVerified = watch('emailVerified')
-  const mobileOtpVerified = watch('mobileOtpVerified')
+  const {
+    register, watch, setValue, formState: { errors },
+  } = useFormContext<Step2>();
+  const [emailOtp, setEmailOtp] = useState('');
+  const [mobileOtp, setMobileOtp] = useState('');
+  const emailVerified = watch('emailVerified');
+  const mobileOtpVerified = watch('mobileOtpVerified');
 
   const verifyEmail = () => {
-    if (emailOtp === '123456') setValue('emailVerified', true, { shouldValidate: true })
-  }
+    if (emailOtp === '123456') setValue('emailVerified', true, { shouldValidate: true });
+  };
   const verifyMobile = () => {
-    if (mobileOtp === '123456') setValue('mobileOtpVerified', true, { shouldValidate: true })
-  }
+    if (mobileOtp === '123456') setValue('mobileOtpVerified', true, { shouldValidate: true });
+  };
 
   return (
     <div className="space-y-6">
@@ -91,5 +93,5 @@ export function Step2Personal() {
 
       <Input.Field {...register('alternateMobile')} label="Alternate Mobile (optional)" type="tel" error={errors.alternateMobile?.message} autoComplete="tel" />
     </div>
-  )
+  );
 }

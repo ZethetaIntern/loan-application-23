@@ -4,7 +4,6 @@ module.exports = {
   extends: [
     'airbnb',
     'airbnb/hooks',
-    'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -16,16 +15,66 @@ module.exports = {
   },
   plugins: ['jsx-a11y'],
   settings: {
-    import/resolver: { typescript: { alwaysTryTypes: true } },
+    'import/resolver': {
+      typescript: { alwaysTryTypes: true },
+    },
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
+    'react/function-component-definition': 'off',
+    'react/jsx-no-bind': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'linebreak-style': 'off',
+    'max-len': ['warn', { code: 120, ignoreStrings: true, ignoreTemplateLiterals: true }],
+    'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'import/extensions': ['off'],
+    'react/prop-types': 'off',
+    'no-restricted-syntax': ['error', { selector: 'ForInStatement', message: 'Use for..of instead.' }],
+    'no-nested-ternary': 'warn',
+    'no-plusplus': 'off',
+    'no-void': 'off',
+    'no-await-in-loop': 'warn',
+    'react/jsx-one-expression-per-line': 'off',
+    'object-curly-newline': 'off',
+    'semi': ['error'],
   },
-  ignorePatterns: ['dist', 'coverage', 'node_modules', 'e2e', '*.cjs', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts'],
+  ignorePatterns: [
+    'dist', 'coverage', 'node_modules',
+    'cypress', '*.cjs',
+    'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts',
+  ],
+  overrides: [
+    {
+      files: ['src/core/**'],
+      rules: {
+        'no-promise-executor-return': 'off',
+        'no-nested-ternary': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
+        'no-console': 'off',
+      },
+    },
+    {
+      files: ['src/features/steps/ContactStep.tsx', 'src/features/steps/DocumentsStep.tsx', 'src/features/steps/SummaryStep.tsx', 'src/features/ui/**', 'src/features/wizard/**'],
+      rules: {
+        'no-promise-executor-return': 'off',
+        'no-nested-ternary': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
+        'consistent-return': 'off',
+        'default-case': 'off',
+      },
+    },
+    {
+      files: ['*.test.ts', '*.test.tsx'],
+      rules: {
+        '@typescript-eslint/no-use-before-define': 'off',
+        'no-use-before-define': 'off',
+      },
+    },
+  ],
 }

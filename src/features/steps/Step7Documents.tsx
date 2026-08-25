@@ -1,12 +1,12 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import { FileUpload, SignatureCanvas } from '../../components/common'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import { FileUpload, SignatureCanvas } from '../../components/common';
 
 type Step7 = ApplicationData['documents']
 
 export function Step7Documents() {
-  const { watch, setValue, formState: { errors } } = useFormContext<Step7>()
-  const documents = watch('documents') ?? []
+  const { watch, setValue, formState: { errors } } = useFormContext<Step7>();
+  const documents = watch('documents') ?? [];
 
   return (
     <div className="space-y-8">
@@ -29,5 +29,5 @@ export function Step7Documents() {
         />
       </div>
     </div>
-  )
+  );
 }

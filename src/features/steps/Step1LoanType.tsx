@@ -1,9 +1,9 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import { RadioGroup, Select, Input } from '../../components/common'
-import CurrencyInput from '../../components/common/CurrencyInput'
-import { ANNUAL_RATES, LOAN_PURPOSES } from '../../utils/constants'
-import { breakdownFor } from '../../services/emicalculator'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import { RadioGroup, Select, Input } from '../../components/common';
+import CurrencyInput from '../../components/common/CurrencyInput';
+import { ANNUAL_RATES, LOAN_PURPOSES } from '../../utils/constants';
+import { breakdownFor } from '../../services/emicalculator';
 
 type Step1 = ApplicationData['step1']
 
@@ -11,17 +11,17 @@ const TENURE_OPTIONS: Record<Step1['loanType'], Array<{ value: string; label: st
   personal: Array.from({ length: 5 }, (_, i) => ({ value: String(12 + i * 12), label: `${12 + i * 12} months` })),
   home: Array.from({ length: 26 }, (_, i) => ({ value: String(60 + i * 12), label: `${(60 + i * 12) / 12} years` })),
   business: Array.from({ length: 11 }, (_, i) => ({ value: String(12 + i * 12), label: `${12 + i * 12} months` })),
-}
+};
 
 export function Step1LoanType() {
-  const { watch, setValue, formState: { errors } } = useFormContext<Step1>()
-  const loanType = watch('loanType')
-  const amount = watch('amount')
-  const tenureMonths = watch('tenureMonths')
+  const { watch, setValue, formState: { errors } } = useFormContext<Step1>();
+  const loanType = watch('loanType');
+  const amount = watch('amount');
+  const tenureMonths = watch('tenureMonths');
 
   const breakdown = amount > 0 && tenureMonths > 0
     ? breakdownFor(loanType, amount, tenureMonths)
-    : null
+    : null;
 
   return (
     <div className="space-y-6">
@@ -31,8 +31,8 @@ export function Step1LoanType() {
         required
         value={loanType}
         onChange={(v) => {
-          setValue('loanType', v as Step1['loanType'], { shouldValidate: true })
-          setValue('loanPurpose', '', { shouldValidate: true })
+          setValue('loanType', v as Step1['loanType'], { shouldValidate: true });
+          setValue('loanPurpose', '', { shouldValidate: true });
         }}
         orientation="horizontal"
         options={[
@@ -88,16 +88,28 @@ export function Step1LoanType() {
           <h4 className="mb-2 font-medium text-gray-700">EMI Breakdown</h4>
           <div className="grid grid-cols-2 gap-2">
             <div>Monthly EMI</div>
-            <div className="font-medium">₹{breakdown.emi.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
+            <div className="font-medium">
+              ₹
+              {breakdown.emi.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </div>
             <div>Total Interest</div>
-            <div className="font-medium">₹{breakdown.totalCostOfBorrowing.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
+            <div className="font-medium">
+              ₹
+              {breakdown.totalCostOfBorrowing.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </div>
             <div>Total Payable</div>
-            <div className="font-medium">₹{(amount + breakdown.totalCostOfBorrowing).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
+            <div className="font-medium">
+              ₹
+              {(amount + breakdown.totalCostOfBorrowing).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </div>
             <div>Processing Fee</div>
-            <div className="font-medium">₹{breakdown.processingFee.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
+            <div className="font-medium">
+              ₹
+              {breakdown.processingFee.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </div>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

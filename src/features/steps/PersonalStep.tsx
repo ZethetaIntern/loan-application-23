@@ -1,12 +1,12 @@
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { personalStepSchema } from '../../core/validation/schemas'
-import type { ApplicationDraft } from '../../core/types'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
-import { SelectField, TextField } from '../ui/fields'
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { personalStepSchema } from '../../core/validation/schemas';
+import type { ApplicationDraft } from '../../core/types';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
+import { SelectField, TextField } from '../ui/fields';
 
 type PersonalValues = z.infer<typeof personalStepSchema>
 
@@ -15,10 +15,10 @@ const MARITAL_OPTIONS = [
   { value: 'married', label: 'Marié(e)' },
   { value: 'divorced', label: 'Divorcé(e)' },
   { value: 'widowed', label: 'Veuf / Veuve' },
-]
+];
 
 export default function PersonalStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
+  const { draft, update } = useDraft();
 
   const {
     register,
@@ -36,17 +36,17 @@ export default function PersonalStep({ onContinue }: StepProps) {
       maritalStatus: draft.maritalStatus,
       dependents: draft.dependents,
     },
-  })
+  });
 
   useEffect(() => {
-    const subscription = watch((values) => update(values as Partial<ApplicationDraft>))
-    return () => subscription.unsubscribe()
-  }, [watch, update])
+    const subscription = watch((values) => update(values as Partial<ApplicationDraft>));
+    return () => subscription.unsubscribe();
+  }, [watch, update]);
 
   const submit = handleSubmit((values) => {
-    update(values as Partial<ApplicationDraft>)
-    onContinue()
-  })
+    update(values as Partial<ApplicationDraft>);
+    onContinue();
+  });
 
   return (
     <form onSubmit={submit} noValidate>
@@ -108,5 +108,5 @@ export default function PersonalStep({ onContinue }: StepProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

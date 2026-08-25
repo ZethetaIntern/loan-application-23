@@ -1,14 +1,14 @@
-import { useMemo, useState } from 'react'
-import { useForm, type Resolver } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { loanDetailsStepSchema } from '../../core/validation/schemas'
-import { validateCrossStep, monthlyIncomeOf } from '../../core/validation/crossStep'
-import { computeEligibility, monthlyPayment } from '../../core/services/eligibility'
-import { LOAN_TYPES } from '../../data/loanTypes'
-import type { ApplicationDraft } from '../../core/types'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
-import { NumberField, SelectField } from '../ui/fields'
+import { useMemo, useState } from 'react';
+import { useForm, type Resolver } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loanDetailsStepSchema } from '../../core/validation/schemas';
+import { validateCrossStep, monthlyIncomeOf } from '../../core/validation/crossStep';
+import { computeEligibility, monthlyPayment } from '../../core/services/eligibility';
+import { LOAN_TYPES } from '../../data/loanTypes';
+import type { ApplicationDraft } from '../../core/types';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
+import { NumberField, SelectField } from '../ui/fields';
 
 interface FormValues {
   amount: number
@@ -25,21 +25,21 @@ const PERSONAL_PURPOSES = [
   { value: 'wedding', label: 'Mariage' },
   { value: 'education', label: 'Éducation' },
   { value: 'other', label: 'Autre' },
-]
+];
 
 const BUSINESS_PURPOSES = [
   { value: 'working_capital', label: 'Fonds de roulement' },
   { value: 'equipment', label: 'Équipement / Matériel' },
   { value: 'expansion', label: 'Expansion / Local' },
   { value: 'other', label: 'Autre' },
-]
+];
 
 export default function LoanDetailsStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
-  const config = LOAN_TYPES[draft.loanType]
-  const [crossError, setCrossError] = useState<string | null>(null)
+  const { draft, update } = useDraft();
+  const config = LOAN_TYPES[draft.loanType];
+  const [crossError, setCrossError] = useState<string | null>(null);
 
-  const schema = useMemo(() => loanDetailsStepSchema(draft.loanType), [draft.loanType])
+  const schema = useMemo(() => loanDetailsStepSchema(draft.loanType), [draft.loanType]);
 
   const {
     register,
@@ -58,15 +58,15 @@ export default function LoanDetailsStep({ onContinue }: StepProps) {
       propertyPrice: draft.propertyPrice,
       downPayment: draft.downPayment,
     },
-  })
+  });
 
-  const amount = watch('amount')
-  const duration = watch('durationMonths')
-  const propertyPrice = watch('propertyPrice')
+  const amount = watch('amount');
+  const duration = watch('durationMonths');
+  const propertyPrice = watch('propertyPrice');
 
   const capacity = useMemo(() => {
-    const income = monthlyIncomeOf(draft)
-    if (income <= 0) return null
+    const income = monthlyIncomeOf(draft);
+    if (income <= 0) return null;
     return computeEligibility({
       monthlyIncome: income,
       otherIncome: draft.otherIncome,
@@ -74,45 +74,63 @@ export default function LoanDetailsStep({ onContinue }: StepProps) {
       amount: config.minAmount,
       durationMonths: config.maxMonths,
       annualRate: config.annualRate,
-    })
-  }, [draft, config])
+    });
+  }, [draft, config]);
 
-  const emi =
-    amount > 0 && duration > 0 ? monthlyPayment(amount, config.annualRate, duration) : null
+  const emi = amount > 0 && duration > 0 ? monthlyPayment(amount, config.annualRate, duration) : null;
 
   const submit = handleSubmit((values) => {
-    const merged = { ...draft, ...values } as ApplicationDraft
-    const issues = validateCrossStep(merged)
+    const merged = { ...draft, ...values } as ApplicationDraft;
+    const issues = validateCrossStep(merged);
     if (issues.length > 0) {
-      setCrossError(null)
+      setCrossError(null);
       for (const issue of issues) {
-        setError(issue.field, { type: 'manual', message: issue.message })
+        setError(issue.field, { type: 'manual', message: issue.message });
       }
-      return
+      return;
     }
-    update(values as Partial<ApplicationDraft>)
-    onContinue()
-  })
+    update(values as Partial<ApplicationDraft>);
+    onContinue();
+  });
 
-  const minDown = (propertyPrice ?? 0) * 0.1
+  const minDown = (propertyPrice ?? 0) * 0.1;
 
   return (
     <form onSubmit={submit} noValidate>
       <h2 className="font-display text-2xl font-bold tracking-tight">Détails du prêt</h2>
       <p className="text-mist mt-2 text-sm">
-        {config.label} — de {config.minAmount.toLocaleString('fr-TN')} à{' '}
-        {config.maxAmount.toLocaleString('fr-TN')} TND sur {config.minMonths} à {config.maxMonths} mois.
+        {config.label}
+        {' '}
+        — de
+        {config.minAmount.toLocaleString('fr-TN')}
+        {' '}
+        à
+        {' '}
+        {config.maxAmount.toLocaleString('fr-TN')}
+        {' '}
+        TND sur
+        {config.minMonths}
+        {' '}
+        à
+        {config.maxMonths}
+        {' '}
+        mois.
       </p>
 
       {capacity && (
         <div className="bg-primary-soft border-primary/20 mt-5 rounded-2xl border p-4 text-sm">
-          <span className="font-semibold">Capacité estimée :</span>{' '}
+          <span className="font-semibold">Capacité estimée :</span>
+          {' '}
           <span className="text-primary font-bold">
-            ≈ {Math.floor(capacity.maxEligibleAmount / 100) * 100 >= 1000
+            ≈
+            {' '}
+            {Math.floor(capacity.maxEligibleAmount / 100) * 100 >= 1000
               ? (Math.floor(capacity.maxEligibleAmount / 100) * 100).toLocaleString('fr-TN')
-              : Math.floor(capacity.maxEligibleAmount).toLocaleString('fr-TN')}{' '}
+              : Math.floor(capacity.maxEligibleAmount).toLocaleString('fr-TN')}
+            {' '}
             TND
-          </span>{' '}
+          </span>
+          {' '}
           <span className="text-mist">
             (règle des 40 % appliquée à vos revenus déclarés)
           </span>
@@ -159,11 +177,16 @@ export default function LoanDetailsStep({ onContinue }: StepProps) {
               Mensualité estimée
             </p>
             <p className="font-display text-primary mt-1 text-3xl font-extrabold">
-              {Math.round(emi).toLocaleString('fr-TN')}{' '}
+              {Math.round(emi).toLocaleString('fr-TN')}
+              {' '}
               <span className="text-gold text-lg">TND / mois</span>
             </p>
             <p className="text-mist mt-1 text-xs">
-              Taux annuel {(config.annualRate * 100).toFixed(1)} % — hors assurance
+              Taux annuel
+              {' '}
+              {(config.annualRate * 100).toFixed(1)}
+              {' '}
+              % — hors assurance
             </p>
           </div>
         )}
@@ -222,5 +245,5 @@ export default function LoanDetailsStep({ onContinue }: StepProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

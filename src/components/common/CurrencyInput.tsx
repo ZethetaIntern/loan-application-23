@@ -1,6 +1,6 @@
-import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
-import { formatRupees } from '../../utils/formatters'
+import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
+import { formatRupees } from '../../utils/formatters';
 
 interface CurrencyInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'onChange'> {
   label: string
@@ -13,17 +13,19 @@ interface CurrencyInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'ty
 }
 
 const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
-  ({ id, name, label, required, error, helpText, onChange, value, wrapperClassName, className, ...rest }, ref) => {
-    const fieldId = id ?? name
-    const errorId = `${fieldId}-error`
-    const helpId = `${fieldId}-help`
+  ({
+    id, name, label, required, error, helpText, onChange, value, wrapperClassName, className, ...rest
+  }, ref) => {
+    const fieldId = id ?? name;
+    const errorId = `${fieldId}-error`;
+    const helpId = `${fieldId}-help`;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value.replace(/[^0-9]/g, '')
-      onChange?.(raw ? Number(raw) : 0)
-    }
+      const raw = e.target.value.replace(/[^0-9]/g, '');
+      onChange?.(raw ? Number(raw) : 0);
+    };
 
-    const displayValue = value ? formatRupees(value) : ''
+    const displayValue = value ? formatRupees(value) : '';
 
     return (
       <div className={wrapperClassName}>
@@ -55,9 +57,9 @@ const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
         {helpText && <p id={helpId} className="mt-1 text-sm text-gray-500">{helpText}</p>}
         {error && <p id={errorId} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
-    )
+    );
   },
-)
-CurrencyInput.displayName = 'CurrencyInput'
+);
+CurrencyInput.displayName = 'CurrencyInput';
 
-export default CurrencyInput
+export default CurrencyInput;

@@ -1,20 +1,22 @@
-import { useFormContext } from 'react-hook-form'
-import { useState } from 'react'
-import type { ApplicationData } from '../../types/application'
-import { Select, Input, Checkbox } from '../../components/common'
-import CurrencyInput from '../../components/common/CurrencyInput'
-import { usePinCodeLookup } from '../../services/pincode'
+import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import type { ApplicationData } from '../../types/application';
+import { Select, Input, Checkbox } from '../../components/common';
+import CurrencyInput from '../../components/common/CurrencyInput';
+import { usePinCodeLookup } from '../../services/pincode';
 
 type Step4 = ApplicationData['address']
 
 export function Step4Address() {
-  const { register, watch, setValue, formState: { errors } } = useFormContext<Step4>()
-  const currentPin = watch('current.pinCode')
-  const pinLookup = usePinCodeLookup(currentPin)
-  const sameAsPermanent = watch('sameAsPermanent')
-  const residenceType = watch('current.residenceType')
-  const yearsAtAddress = watch('current.yearsAtAddress')
-  const [showPrevious, setShowPrevious] = useState(false)
+  const {
+    register, watch, setValue, formState: { errors },
+  } = useFormContext<Step4>();
+  const currentPin = watch('current.pinCode');
+  const pinLookup = usePinCodeLookup(currentPin);
+  const sameAsPermanent = watch('sameAsPermanent');
+  const residenceType = watch('current.residenceType');
+  const yearsAtAddress = watch('current.yearsAtAddress');
+  const [showPrevious, setShowPrevious] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -123,5 +125,5 @@ export function Step4Address() {
         </fieldset>
       )}
     </div>
-  )
+  );
 }

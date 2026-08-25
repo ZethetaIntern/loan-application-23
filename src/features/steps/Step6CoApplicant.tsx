@@ -1,24 +1,26 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import { Select, Input } from '../../components/common'
-import CurrencyInput from '../../components/common/CurrencyInput'
-import Checkbox from '../../components/common/Checkbox'
-import MaskedInput from '../../components/common/MaskedInput'
-import { useWizard } from '../../context/WizardContext'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import { Select, Input } from '../../components/common';
+import CurrencyInput from '../../components/common/CurrencyInput';
+import Checkbox from '../../components/common/Checkbox';
+import MaskedInput from '../../components/common/MaskedInput';
+import { useWizard } from '../../context/WizardContext';
 
 type Step6 = ApplicationData['coApplicant']
 
 export function Step6CoApplicant() {
-  const { register, watch, setValue, formState: { errors } } = useFormContext<Step6>()
-  const { data } = useWizard()
-  const panStatus = watch('panStatus')
+  const {
+    register, watch, setValue, formState: { errors },
+  } = useFormContext<Step6>();
+  const { data } = useWizard();
+  const panStatus = watch('panStatus');
 
   const verifyPan = async () => {
-    setValue('panStatus', 'verifying')
-    const { verifyPan: api } = await import('../../services/kyc')
-    const result = await api(watch('pan') ?? '', data.step1.loanType)
-    setValue('panStatus', result.status)
-  }
+    setValue('panStatus', 'verifying');
+    const { verifyPan: api } = await import('../../services/kyc');
+    const result = await api(watch('pan') ?? '', data.step1.loanType);
+    setValue('panStatus', result.status);
+  };
 
   return (
     <div className="space-y-6">
@@ -72,5 +74,5 @@ export function Step6CoApplicant() {
         error={errors.consent?.message}
       />
     </div>
-  )
+  );
 }

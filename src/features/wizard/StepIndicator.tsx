@@ -5,15 +5,17 @@ interface StepIndicatorProps {
   onStepClick: (index: number) => void
 }
 
-export default function StepIndicator({ labels, current, maxVisited, onStepClick }: StepIndicatorProps) {
+export default function StepIndicator({
+  labels, current, maxVisited, onStepClick,
+}: StepIndicatorProps) {
   return (
     <nav aria-label="Progression de la demande">
       <ol className="flex items-start">
         {labels.map((label, index) => {
-          const done = index < current
-          const isCurrent = index === current
-          const reachable = index <= maxVisited
-          const isLast = index === labels.length - 1
+          const done = index < current;
+          const isCurrent = index === current;
+          const reachable = index <= maxVisited;
+          const isLast = index === labels.length - 1;
 
           return (
             <li key={label} className={`flex ${isLast ? '' : 'flex-1'} items-start`}>
@@ -61,9 +63,9 @@ export default function StepIndicator({ labels, current, maxVisited, onStepClick
                 />
               )}
             </li>
-          )
+          );
         })}
       </ol>
     </nav>
-  )
+  );
 }

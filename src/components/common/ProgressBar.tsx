@@ -4,16 +4,25 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ steps, currentIndex }: ProgressBarProps) {
-  const total = steps.length
-  const pct = total > 0 ? Math.round(((Math.min(currentIndex, total) ) / total) * 100) : 0
+  const total = steps.length;
+  const pct = total > 0 ? Math.round(((Math.min(currentIndex, total)) / total) * 100) : 0;
 
   return (
     <nav aria-label="Application progress" className="w-full">
       <div className="flex items-center justify-between text-xs text-gray-500">
         <span>
-          Step {Math.min(currentIndex + 1, total)} of {total}
+          Step
+          {' '}
+          {Math.min(currentIndex + 1, total)}
+          {' '}
+          of
+          {' '}
+          {total}
         </span>
-        <span>{pct}%</span>
+        <span>
+          {pct}
+          %
+        </span>
       </div>
       <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={`Step ${currentIndex + 1} of ${total}, ${pct}% complete`}>
         <div
@@ -23,7 +32,7 @@ export function ProgressBar({ steps, currentIndex }: ProgressBarProps) {
       </div>
       <ol className="mt-3 flex gap-1" aria-label="Steps">
         {steps.map((step, i) => {
-          const status = i < currentIndex ? 'completed' : i === currentIndex ? 'current' : 'upcoming'
+          const status = i < currentIndex ? 'completed' : i === currentIndex ? 'current' : 'upcoming';
           return (
             <li
               key={step.key}
@@ -39,9 +48,9 @@ export function ProgressBar({ steps, currentIndex }: ProgressBarProps) {
             >
               {step.title}
             </li>
-          )
+          );
         })}
       </ol>
     </nav>
-  )
+  );
 }

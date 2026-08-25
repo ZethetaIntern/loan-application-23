@@ -48,19 +48,18 @@ export const TUNISIA_PLACES: PlaceEntry[] = [
   { governorate: 'Gafsa', delegation: 'Gafsa Sud', postalCode: '2100' },
   { governorate: 'Tozeur', delegation: 'Tozeur', postalCode: '2200' },
   { governorate: 'Kébili', delegation: 'Kébili Ouest', postalCode: '4200' },
-]
+];
 
 export const GOVERNORATES: string[] = [...new Set(TUNISIA_PLACES.map((p) => p.governorate))].sort(
   (a, b) => a.localeCompare(b, 'fr'),
-)
+);
 
 export function searchPlaces(query: string, limit = 8): PlaceEntry[] {
-  const q = query.trim().toLowerCase()
-  if (q.length < 2) return []
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) return [];
   return TUNISIA_PLACES.filter(
-    (p) =>
-      p.delegation.toLowerCase().includes(q) ||
-      p.governorate.toLowerCase().includes(q) ||
-      p.postalCode.startsWith(q),
-  ).slice(0, limit)
+    (p) => p.delegation.toLowerCase().includes(q)
+      || p.governorate.toLowerCase().includes(q)
+      || p.postalCode.startsWith(q),
+  ).slice(0, limit);
 }

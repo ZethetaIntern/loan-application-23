@@ -1,31 +1,33 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import MaskedInput from '../../components/common/MaskedInput'
-import Checkbox from '../../components/common/Checkbox'
-import { useWizard } from '../../context/WizardContext'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import MaskedInput from '../../components/common/MaskedInput';
+import Checkbox from '../../components/common/Checkbox';
+import { useWizard } from '../../context/WizardContext';
 
 type Step3 = ApplicationData['kyc']
 
 export function Step3Kyc() {
-  const { register, watch, setValue, formState: { errors } } = useFormContext<Step3>()
-  const { data } = useWizard()
-  const loanType = data.step1.loanType
-  const panStatus = watch('panStatus')
-  const aadhaarStatus = watch('aadhaarStatus')
+  const {
+    register, watch, setValue, formState: { errors },
+  } = useFormContext<Step3>();
+  const { data } = useWizard();
+  const { loanType } = data.step1;
+  const panStatus = watch('panStatus');
+  const aadhaarStatus = watch('aadhaarStatus');
 
   const verifyPan = async () => {
-    setValue('panStatus', 'verifying')
-    const { verifyPan: api } = await import('../../services/kyc')
-    const result = await api(watch('pan'), loanType)
-    setValue('panStatus', result.status)
-  }
+    setValue('panStatus', 'verifying');
+    const { verifyPan: api } = await import('../../services/kyc');
+    const result = await api(watch('pan'), loanType);
+    setValue('panStatus', result.status);
+  };
 
   const verifyAadhaar = async () => {
-    setValue('aadhaarStatus', 'verifying')
-    const { verifyAadhaar: api } = await import('../../services/kyc')
-    const result = await api(watch('aadhaar'))
-    setValue('aadhaarStatus', result.status)
-  }
+    setValue('aadhaarStatus', 'verifying');
+    const { verifyAadhaar: api } = await import('../../services/kyc');
+    const result = await api(watch('aadhaar'));
+    setValue('aadhaarStatus', result.status);
+  };
 
   return (
     <div className="space-y-6">
@@ -62,5 +64,5 @@ export function Step3Kyc() {
 
       <MaskedInput {...register('voterId')} name="voterId" label="Voter ID (optional)" kind="aadhaar" helpText="Optional — 3 letters + 7 digits" />
     </div>
-  )
+  );
 }

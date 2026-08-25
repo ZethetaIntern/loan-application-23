@@ -1,55 +1,55 @@
-import { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import type { StoredDocument } from '../../types/domain'
+import { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import type { StoredDocument } from '../../types/domain';
 
 const ACCEPTED_MIME: Record<string, string[]> = {
   'application/pdf': ['.pdf'],
   'image/jpeg': ['.jpg', '.jpeg'],
   'image/png': ['.png'],
-}
+};
 
 function sizeLabel(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 async function compressImage(file: File): Promise<{ blob: Blob; dataUrl: string }> {
   return new Promise((resolve) => {
-    const img = new Image()
-    const url = URL.createObjectURL(file)
+    const img = new Image();
+    const url = URL.createObjectURL(file);
     img.onload = () => {
-      const MAX = 1200
-      let w = img.width
-      let h = img.height
-      if (w > MAX) { h = Math.round((h / w) * MAX); w = MAX }
-      const canvas = document.createElement('canvas')
-      canvas.width = w
-      canvas.height = h
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0, w, h)
+      const MAX = 1200;
+      let w = img.width;
+      let h = img.height;
+      if (w > MAX) { h = Math.round((h / w) * MAX); w = MAX; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0, w, h);
       canvas.toBlob(
         (blob) => {
-          URL.revokeObjectURL(url)
-          if (!blob) { resolve({ blob: file, dataUrl: '' }); return }
-          const reader = new FileReader()
-          reader.onload = () => resolve({ blob, dataUrl: reader.result as string })
-          reader.readAsDataURL(blob)
+          URL.revokeObjectURL(url);
+          if (!blob) { resolve({ blob: file, dataUrl: '' }); return; }
+          const reader = new FileReader();
+          reader.onload = () => resolve({ blob, dataUrl: reader.result as string });
+          reader.readAsDataURL(blob);
         },
         'image/jpeg',
         0.7,
-      )
-    }
-    img.src = url
-  })
+      );
+    };
+    img.src = url;
+  });
 }
 
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.readAsDataURL(file)
-  })
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.readAsDataURL(file);
+  });
 }
 
 interface FileUploadProps {
@@ -60,24 +60,26 @@ interface FileUploadProps {
   error?: string
 }
 
-export function FileUpload({ documents, onChange, maxFiles = 10, label = 'Upload Documents', error }: FileUploadProps) {
-  const [busy, setBusy] = useState(false)
+export function FileUpload({
+  documents, onChange, maxFiles = 10, label = 'Upload Documents', error,
+}: FileUploadProps) {
+  const [busy, setBusy] = useState(false);
 
   const onDrop = useCallback(
     async (accepted: File[]) => {
-      if (!accepted.length) return
-      setBusy(true)
-      const newDocs: StoredDocument[] = []
+      if (!accepted.length) return;
+      setBusy(true);
+      const newDocs: StoredDocument[] = [];
       for (const file of accepted) {
-        const isImage = file.type.startsWith('image/') && file.type !== 'image/gif'
-        let dataUrl: string
-        let compressedSize = file.size
+        const isImage = file.type.startsWith('image/') && file.type !== 'image/gif';
+        let dataUrl: string;
+        let compressedSize = file.size;
         if (isImage) {
-          const result = await compressImage(file)
-          dataUrl = result.dataUrl || (await fileToDataUrl(file))
-          compressedSize = result.blob.size
+          const result = await compressImage(file);
+          dataUrl = result.dataUrl || (await fileToDataUrl(file));
+          compressedSize = result.blob.size;
         } else {
-          dataUrl = await fileToDataUrl(file)
+          dataUrl = await fileToDataUrl(file);
         }
         newDocs.push({
           id: `doc-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -87,28 +89,28 @@ export function FileUpload({ documents, onChange, maxFiles = 10, label = 'Upload
           compressedSizeBytes: compressedSize,
           dataUrl,
           uploadedAt: new Date().toISOString(),
-        })
+        });
       }
-      onChange([...documents, ...newDocs].slice(0, maxFiles))
-      setBusy(false)
+      onChange([...documents, ...newDocs].slice(0, maxFiles));
+      setBusy(false);
     },
     [documents, onChange, maxFiles],
-  )
+  );
 
   const removeDoc = (id: string) => {
-    onChange(documents.filter((d) => d.id !== id))
-  }
+    onChange(documents.filter((d) => d.id !== id));
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: ACCEPTED_MIME,
     maxSize: 10 * 1024 * 1024,
     disabled: documents.length >= maxFiles,
-  })
+  });
 
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
+      <p className="mb-1 block text-sm font-medium text-gray-700">{label}</p>
       <div
         {...getRootProps()}
         role="button"
@@ -124,7 +126,9 @@ export function FileUpload({ documents, onChange, maxFiles = 10, label = 'Upload
         ) : (
           <>
             <p className="text-sm text-gray-600">
-              Drag & drop files here, or <span className="text-blue-600 underline">browse</span>
+              Drag & drop files here, or
+              {' '}
+              <span className="text-blue-600 underline">browse</span>
             </p>
             <p className="mt-1 text-xs text-gray-400">PDF, JPG, PNG — Max 10 MB each</p>
           </>
@@ -146,7 +150,13 @@ export function FileUpload({ documents, onChange, maxFiles = 10, label = 'Upload
                 <p className="text-xs text-gray-400">
                   {sizeLabel(doc.originalSizeBytes)}
                   {doc.compressedSizeBytes < doc.originalSizeBytes && (
-                    <> → {sizeLabel(doc.compressedSizeBytes)} (compressed)</>
+                    <>
+                      {' '}
+                      →
+                      {sizeLabel(doc.compressedSizeBytes)}
+                      {' '}
+                      (compressed)
+                    </>
                   )}
                 </p>
               </div>
@@ -163,5 +173,5 @@ export function FileUpload({ documents, onChange, maxFiles = 10, label = 'Upload
         </ul>
       )}
     </div>
-  )
+  );
 }

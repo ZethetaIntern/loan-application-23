@@ -1,6 +1,6 @@
-import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
-import { maskAadhaar, maskPan } from '../../utils/validators'
+import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
+import { maskAadhaar, maskPan } from '../../utils/validators';
 
 interface MaskedInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type'> {
   label: string
@@ -11,22 +11,24 @@ interface MaskedInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type
   wrapperClassName?: string
 }
 
-const MASKERS = { pan: maskPan, aadhaar: maskAadhaar }
-const PATTERNS = { pan: 'AAAAA9999A', aadhaar: 'XXXX XXXX XXXX' }
-const MAX_LEN = { pan: 10, aadhaar: 12 }
+const MASKERS = { pan: maskPan, aadhaar: maskAadhaar };
+const PATTERNS = { pan: 'AAAAA9999A', aadhaar: 'XXXX XXXX XXXX' };
+const MAX_LEN = { pan: 10, aadhaar: 12 };
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
-  ({ id, name, label, required, error, helpText, kind, value, onChange, wrapperClassName, className, ...rest }, ref) => {
-    const fieldId = id ?? name
-    const errorId = `${fieldId}-error`
-    const helpId = `${fieldId}-help`
-    const mask = MASKERS[kind]
-    const display = typeof value === 'string' && value.length > 0 ? mask(value) : ''
+  ({
+    id, name, label, required, error, helpText, kind, value, onChange, wrapperClassName, className, ...rest
+  }, ref) => {
+    const fieldId = id ?? name;
+    const errorId = `${fieldId}-error`;
+    const helpId = `${fieldId}-help`;
+    const mask = MASKERS[kind];
+    const display = typeof value === 'string' && value.length > 0 ? mask(value) : '';
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, MAX_LEN[kind])
-      onChange?.({ target: { value: raw } } as React.ChangeEvent<HTMLInputElement>)
-    }
+      const raw = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, MAX_LEN[kind]);
+      onChange?.({ target: { value: raw } } as React.ChangeEvent<HTMLInputElement>);
+    };
 
     return (
       <div className={wrapperClassName}>
@@ -54,9 +56,9 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
         {helpText && <p id={helpId} className="mt-1 text-sm text-gray-500">{helpText}</p>}
         {error && <p id={errorId} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
-    )
+    );
   },
-)
-MaskedInput.displayName = 'MaskedInput'
+);
+MaskedInput.displayName = 'MaskedInput';
 
-export default MaskedInput
+export default MaskedInput;

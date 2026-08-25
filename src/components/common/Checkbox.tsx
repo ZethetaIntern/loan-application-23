@@ -1,5 +1,5 @@
-import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
+import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 interface CheckboxProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type'> {
   label: React.ReactNode
@@ -8,9 +8,11 @@ interface CheckboxProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type'> 
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ id, name, label, error, wrapperClassName, className, ...rest }, ref) => {
-    const fieldId = id ?? name
-    const errorId = `${fieldId}-error`
+  ({
+    id, name, label, error, wrapperClassName, className, ...rest
+  }, ref) => {
+    const fieldId = id ?? name;
+    const errorId = `${fieldId}-error`;
     return (
       <div className={wrapperClassName}>
         <label htmlFor={fieldId} className="flex cursor-pointer items-start gap-2 text-sm text-gray-700">
@@ -32,9 +34,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           </p>
         )}
       </div>
-    )
+    );
   },
-)
-Checkbox.displayName = 'Checkbox'
+);
+Checkbox.displayName = 'Checkbox';
 
-export default Checkbox
+export default Checkbox;

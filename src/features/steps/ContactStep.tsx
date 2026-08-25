@@ -1,20 +1,20 @@
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { contactStepSchema } from '../../core/validation/schemas'
-import type { ApplicationDraft } from '../../core/types'
-import type { PlaceEntry } from '../../data/tunisia'
-import { GOVERNORATES } from '../../data/tunisia'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
-import { TextField } from '../ui/fields'
-import AddressAutocomplete from '../ui/AddressAutocomplete'
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { contactStepSchema } from '../../core/validation/schemas';
+import type { ApplicationDraft } from '../../core/types';
+import type { PlaceEntry } from '../../data/tunisia';
+import { GOVERNORATES } from '../../data/tunisia';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
+import { TextField } from '../ui/fields';
+import AddressAutocomplete from '../ui/AddressAutocomplete';
 
 type ContactValues = z.infer<typeof contactStepSchema>
 
 export default function ContactStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
+  const { draft, update } = useDraft();
 
   const {
     register,
@@ -30,22 +30,22 @@ export default function ContactStep({ onContinue }: StepProps) {
       phone: draft.phone,
       address: draft.address,
     },
-  })
+  });
 
   useEffect(() => {
-    const subscription = watch((values) => update(values as Partial<ApplicationDraft>))
-    return () => subscription.unsubscribe()
-  }, [watch, update])
+    const subscription = watch((values) => update(values as Partial<ApplicationDraft>));
+    return () => subscription.unsubscribe();
+  }, [watch, update]);
 
   const submit = handleSubmit((values) => {
-    update(values as Partial<ApplicationDraft>)
-    onContinue()
-  })
+    update(values as Partial<ApplicationDraft>);
+    onContinue();
+  });
 
   function handlePlaceSelect(place: PlaceEntry) {
-    setValue('address.city', place.delegation, { shouldValidate: true })
-    setValue('address.governorate', place.governorate, { shouldValidate: true })
-    setValue('address.postalCode', place.postalCode, { shouldValidate: true })
+    setValue('address.city', place.delegation, { shouldValidate: true });
+    setValue('address.governorate', place.governorate, { shouldValidate: true });
+    setValue('address.postalCode', place.postalCode, { shouldValidate: true });
   }
 
   return (
@@ -140,5 +140,5 @@ export default function ContactStep({ onContinue }: StepProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

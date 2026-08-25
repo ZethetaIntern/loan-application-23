@@ -1,17 +1,25 @@
-import { useFormContext } from 'react-hook-form'
-import type { ApplicationData } from '../../types/application'
-import { RadioGroup, Input } from '../../components/common'
-import CurrencyInput from '../../components/common/CurrencyInput'
-import { EMPLOYMENT_ALLOWED_BY_LOAN_TYPE } from '../../utils/constants'
+import { useFormContext } from 'react-hook-form';
+import type { ApplicationData } from '../../types/application';
+import { RadioGroup, Input } from '../../components/common';
+import CurrencyInput from '../../components/common/CurrencyInput';
+import { EMPLOYMENT_ALLOWED_BY_LOAN_TYPE } from '../../utils/constants';
 
 type Step5 = ApplicationData['employment']
 
 export function Step5Employment() {
-  const { register, watch, setValue, formState: { errors } } = useFormContext<Step5 & { companyName?: string; designation?: string; monthlySalary?: number; businessName?: string; businessType?: string; annualTurnover?: number; monthlyBusinessIncome?: number; yearsInBusiness?: number; gstNumber?: string; officeAddress?: string }>()
-  const employmentType = watch('employmentType')
-  const formValues = useFormContext().getValues() as unknown as ApplicationData
-  const loanType = formValues.step1?.loanType ?? 'personal'
-  const allowed = EMPLOYMENT_ALLOWED_BY_LOAN_TYPE[loanType] ?? []
+  type Step5FormValues = Step5 & {
+    companyName?: string; designation?: string; monthlySalary?: number;
+    businessName?: string; businessType?: string; annualTurnover?: number;
+    monthlyBusinessIncome?: number; yearsInBusiness?: number;
+    gstNumber?: string; officeAddress?: string;
+  };
+  const {
+    register, watch, setValue, formState: { errors },
+  } = useFormContext<Step5FormValues>();
+  const employmentType = watch('employmentType');
+  const formValues = useFormContext().getValues() as unknown as ApplicationData;
+  const loanType = formValues.step1?.loanType ?? 'personal';
+  const allowed = EMPLOYMENT_ALLOWED_BY_LOAN_TYPE[loanType] ?? [];
 
   return (
     <div className="space-y-6">
@@ -82,5 +90,5 @@ export function Step5Employment() {
         </div>
       )}
     </div>
-  )
+  );
 }

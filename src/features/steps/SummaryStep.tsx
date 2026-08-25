@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { LOAN_TYPES } from '../../data/loanTypes'
-import { monthlyIncomeOf } from '../../core/validation/crossStep'
-import { computeEligibility } from '../../core/services/eligibility'
-import { clearStoredDraft } from '../../core/services/storage'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
+import { useState } from 'react';
+import { LOAN_TYPES } from '../../data/loanTypes';
+import { monthlyIncomeOf } from '../../core/validation/crossStep';
+import { computeEligibility } from '../../core/services/eligibility';
+import { clearStoredDraft } from '../../core/services/storage';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
 
 interface SummaryStepProps extends StepProps {
   goto?: (index: number) => void
@@ -38,7 +38,7 @@ function Section({
       </div>
       <dl className="mt-3 space-y-1.5 text-sm">{children}</dl>
     </div>
-  )
+  );
 }
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
@@ -47,15 +47,15 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
       <dt className="text-mist">{label}</dt>
       <dd className="font-medium text-right">{value}</dd>
     </div>
-  )
+  );
 }
 
 export default function SummaryStep({ goto, onFinish }: SummaryStepProps) {
-  const { draft } = useDraft()
-  const config = LOAN_TYPES[draft.loanType]
-  const [submitting, setSubmitting] = useState(false)
+  const { draft } = useDraft();
+  const config = LOAN_TYPES[draft.loanType];
+  const [submitting, setSubmitting] = useState(false);
 
-  const income = monthlyIncomeOf(draft)
+  const income = monthlyIncomeOf(draft);
   const eligibility = computeEligibility({
     monthlyIncome: income,
     otherIncome: draft.otherIncome,
@@ -63,13 +63,13 @@ export default function SummaryStep({ goto, onFinish }: SummaryStepProps) {
     amount: draft.amount,
     durationMonths: draft.durationMonths,
     annualRate: config.annualRate,
-  })
+  });
 
   async function submit() {
-    setSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1600))
-    clearStoredDraft()
-    onFinish?.()
+    setSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 1600));
+    clearStoredDraft();
+    onFinish?.();
   }
 
   return (
@@ -91,9 +91,22 @@ export default function SummaryStep({ goto, onFinish }: SummaryStepProps) {
               ✓ Dossier pré-approuvé
             </p>
             <p className="mt-1 text-sm text-green-900">
-              Mensualité de{' '}
-              <strong>{Math.round(eligibility.requestedEmi).toLocaleString('fr-TN')} TND</strong> pendant{' '}
-              {draft.durationMonths} mois — taux {(config.annualRate * 100).toFixed(1)} %.
+              Mensualité de
+              {' '}
+              <strong>
+                {Math.round(eligibility.requestedEmi).toLocaleString('fr-TN')}
+                {' '}
+                TND
+              </strong>
+              {' '}
+              pendant
+              {' '}
+              {draft.durationMonths}
+              {' '}
+              mois — taux
+              {(config.annualRate * 100).toFixed(1)}
+              {' '}
+              %.
             </p>
           </>
         ) : (
@@ -102,8 +115,14 @@ export default function SummaryStep({ goto, onFinish }: SummaryStepProps) {
               ⚠ Contre-offre proposée
             </p>
             <p className="mt-1 text-sm text-yellow-900">
-              Sur la base de votre capacité, nous pouvons vous accorder{' '}
-              <strong>{(eligibility.counterAmount ?? 0).toLocaleString('fr-TN')} TND</strong>.
+              Sur la base de votre capacité, nous pouvons vous accorder
+              {' '}
+              <strong>
+                {(eligibility.counterAmount ?? 0).toLocaleString('fr-TN')}
+                {' '}
+                TND
+              </strong>
+              .
             </p>
           </>
         )}
@@ -183,5 +202,5 @@ export default function SummaryStep({ goto, onFinish }: SummaryStepProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }

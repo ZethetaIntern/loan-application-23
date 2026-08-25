@@ -1,4 +1,4 @@
-import type { DocumentKind, LoanType } from '../core/types'
+import type { DocumentKind, LoanType } from '../core/types';
 
 export interface LoanTypeConfig {
   label: string
@@ -81,9 +81,9 @@ export const LOAN_TYPES: Record<LoanType, LoanTypeConfig> = {
       bank_statement: 'Relevé bancaire professionnel (6 mois)',
     },
   },
-}
+};
 
-export const LOAN_TYPE_ORDER: LoanType[] = ['personal', 'home', 'business']
+export const LOAN_TYPE_ORDER: LoanType[] = ['personal', 'home', 'business'];
 
-export const FOIR_LIMIT = 0.4
-export const MIN_DOWN_PAYMENT_RATIO = 0.1
+export const FOIR_LIMIT = 0.4;
+export const MIN_DOWN_PAYMENT_RATIO = 0.1;

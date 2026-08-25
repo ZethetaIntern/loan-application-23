@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
-import SignaturePad from '../ui/SignaturePad'
+import { useState } from 'react';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
+import SignaturePad from '../ui/SignaturePad';
 
 export default function SignatureStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
-  const [signedDataUrl, setSignedDataUrl] = useState<string | null>(draft.signatureDataUrl ?? null)
+  const { draft, update } = useDraft();
+  const [signedDataUrl, setSignedDataUrl] = useState<string | null>(draft.signatureDataUrl ?? null);
 
   return (
     <div>
@@ -25,8 +25,8 @@ export default function SignatureStep({ onContinue }: StepProps) {
         <button
           type="button"
           onClick={() => {
-            update({ signatureDataUrl: signedDataUrl ?? undefined })
-            onContinue()
+            update({ signatureDataUrl: signedDataUrl ?? undefined });
+            onContinue();
           }}
           disabled={!signedDataUrl}
           className="bg-primary hover:bg-primary-deep disabled:bg-line disabled:text-mist rounded-full px-8 py-3 text-sm font-semibold text-white transition-colors disabled:cursor-not-allowed"
@@ -35,5 +35,5 @@ export default function SignatureStep({ onContinue }: StepProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }

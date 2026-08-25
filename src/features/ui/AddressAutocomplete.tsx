@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { searchPlaces, type PlaceEntry } from '../../data/tunisia'
+import { useEffect, useRef, useState } from 'react';
+import { searchPlaces, type PlaceEntry } from '../../data/tunisia';
 
 interface AddressAutocompleteProps {
   label?: string
@@ -8,45 +8,45 @@ interface AddressAutocompleteProps {
 }
 
 export default function AddressAutocomplete({ label = 'Localité', error, onSelect }: AddressAutocompleteProps) {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<PlaceEntry[]>([])
-  const [open, setOpen] = useState(false)
-  const [activeIndex, setActiveIndex] = useState(-1)
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<PlaceEntry[]>([]);
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (query.trim().length < 2) {
-      setResults([])
-      return
+      setResults([]);
+      return;
     }
     const timer = setTimeout(() => {
-      const found = searchPlaces(query)
-      setResults(found)
-      setOpen(found.length > 0)
-      setActiveIndex(-1)
-    }, 200)
-    return () => clearTimeout(timer)
-  }, [query])
+      const found = searchPlaces(query);
+      setResults(found);
+      setOpen(found.length > 0);
+      setActiveIndex(-1);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   function choose(place: PlaceEntry) {
-    onSelect(place)
-    setQuery(`${place.delegation} — ${place.governorate}`)
-    setOpen(false)
+    onSelect(place);
+    setQuery(`${place.delegation} — ${place.governorate}`);
+    setOpen(false);
   }
 
   function handleKeyDown(event: React.KeyboardEvent) {
-    if (!open || results.length === 0) return
+    if (!open || results.length === 0) return;
     if (event.key === 'ArrowDown') {
-      event.preventDefault()
-      setActiveIndex((i) => (i + 1) % results.length)
+      event.preventDefault();
+      setActiveIndex((i) => (i + 1) % results.length);
     } else if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      setActiveIndex((i) => (i - 1 + results.length) % results.length)
+      event.preventDefault();
+      setActiveIndex((i) => (i - 1 + results.length) % results.length);
     } else if (event.key === 'Enter' && activeIndex >= 0) {
-      event.preventDefault()
-      choose(results[activeIndex])
+      event.preventDefault();
+      choose(results[activeIndex]);
     } else if (event.key === 'Escape') {
-      setOpen(false)
+      setOpen(false);
     }
   }
 
@@ -66,7 +66,7 @@ export default function AddressAutocomplete({ label = 'Localité', error, onSele
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => results.length > 0 && setOpen(true)}
         onBlur={() => {
-          closeTimer.current = setTimeout(() => setOpen(false), 150)
+          closeTimer.current = setTimeout(() => setOpen(false), 150);
         }}
         onKeyDown={handleKeyDown}
         className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-mist/60 focus:border-primary focus:ring-2 focus:ring-primary/20 ${
@@ -92,7 +92,11 @@ export default function AddressAutocomplete({ label = 'Localité', error, onSele
               >
                 <span className="font-medium">
                   {place.delegation}
-                  <span className="text-mist font-normal"> — {place.governorate}</span>
+                  <span className="text-mist font-normal">
+                    {' '}
+                    —
+                    {place.governorate}
+                  </span>
                 </span>
                 <span className="font-mono text-xs">{place.postalCode}</span>
               </button>
@@ -106,5 +110,5 @@ export default function AddressAutocomplete({ label = 'Localité', error, onSele
         </p>
       )}
     </div>
-  )
+  );
 }

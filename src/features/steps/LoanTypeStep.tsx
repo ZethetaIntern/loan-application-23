@@ -1,11 +1,11 @@
-import { LOAN_TYPE_ORDER, LOAN_TYPES } from '../../data/loanTypes'
-import type { LoanType } from '../../core/types'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
+import { LOAN_TYPE_ORDER, LOAN_TYPES } from '../../data/loanTypes';
+import type { LoanType } from '../../core/types';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
 
 export default function LoanTypeStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
-  const selected: LoanType | null = draft.amount > 0 || draft.loanType ? draft.loanType : null
+  const { draft, update } = useDraft();
+  const selected: LoanType | null = draft.amount > 0 || draft.loanType ? draft.loanType : null;
 
   return (
     <div>
@@ -16,8 +16,8 @@ export default function LoanTypeStep({ onContinue }: StepProps) {
 
       <div className="mt-8 grid gap-4 md:grid-cols-3" role="radiogroup" aria-label="Type de prêt">
         {LOAN_TYPE_ORDER.map((type) => {
-          const config = LOAN_TYPES[type]
-          const active = selected === type
+          const config = LOAN_TYPES[type];
+          const active = selected === type;
           return (
             <button
               key={type}
@@ -46,22 +46,34 @@ export default function LoanTypeStep({ onContinue }: StepProps) {
                 <div className="flex justify-between">
                   <dt className="text-mist">Montant</dt>
                   <dd className="font-semibold">
-                    {config.minAmount.toLocaleString('fr-TN')}–{config.maxAmount.toLocaleString('fr-TN')} TND
+                    {config.minAmount.toLocaleString('fr-TN')}
+                    –
+                    {config.maxAmount.toLocaleString('fr-TN')}
+                    {' '}
+                    TND
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-mist">Durée</dt>
                   <dd className="font-semibold">
-                    {config.minMonths}–{config.maxMonths} mois
+                    {config.minMonths}
+                    –
+                    {config.maxMonths}
+                    {' '}
+                    mois
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-mist">Taux annuel</dt>
-                  <dd className="text-gold font-bold">{(config.annualRate * 100).toFixed(1)} %</dd>
+                  <dd className="text-gold font-bold">
+                    {(config.annualRate * 100).toFixed(1)}
+                    {' '}
+                    %
+                  </dd>
                 </div>
               </dl>
             </button>
-          )
+          );
         })}
       </div>
 
@@ -76,5 +88,5 @@ export default function LoanTypeStep({ onContinue }: StepProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }

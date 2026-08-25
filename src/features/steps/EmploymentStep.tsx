@@ -1,23 +1,29 @@
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { employmentStepSchema } from '../../core/validation/schemas'
-import type { ApplicationDraft, EmploymentStatus } from '../../core/types'
-import { useDraft } from '../wizard/DraftContext'
-import type { StepProps } from '../wizard/steps'
-import { NumberField, TextField } from '../ui/fields'
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { employmentStepSchema } from '../../core/validation/schemas';
+import type { ApplicationDraft, EmploymentStatus } from '../../core/types';
+import { useDraft } from '../wizard/DraftContext';
+import type { StepProps } from '../wizard/steps';
+import { NumberField, TextField } from '../ui/fields';
 
 type EmploymentValues = z.input<typeof employmentStepSchema>
 
 const STATUS_CARDS: { value: EmploymentStatus; label: string; description: string; icon: string }[] = [
-  { value: 'salaried', label: 'Salarié(e)', description: 'CDI, CDD ou SIVP', icon: '💼' },
-  { value: 'self_employed', label: 'Indépendant(e)', description: 'Entreprise, profession libérale', icon: '🏢' },
-  { value: 'retired', label: 'Retraité(e)', description: 'Pension CNRPS / Caisse nationale', icon: '🌴' },
-]
+  {
+    value: 'salaried', label: 'Salarié(e)', description: 'CDI, CDD ou SIVP', icon: '💼',
+  },
+  {
+    value: 'self_employed', label: 'Indépendant(e)', description: 'Entreprise, profession libérale', icon: '🏢',
+  },
+  {
+    value: 'retired', label: 'Retraité(e)', description: 'Pension CNRPS / Caisse nationale', icon: '🌴',
+  },
+];
 
 export default function EmploymentStep({ onContinue }: StepProps) {
-  const { draft, update } = useDraft()
+  const { draft, update } = useDraft();
 
   const {
     register,
@@ -44,23 +50,23 @@ export default function EmploymentStep({ onContinue }: StepProps) {
       annualRevenue: draft.annualRevenue,
       yearsInBusiness: draft.yearsInBusiness,
     },
-  })
+  });
 
-  const status = watch('employmentStatus')
+  const status = watch('employmentStatus');
 
   useEffect(() => {
-    const subscription = watch((values) => update(values as Partial<ApplicationDraft>))
-    return () => subscription.unsubscribe()
-  }, [watch, update])
+    const subscription = watch((values) => update(values as Partial<ApplicationDraft>));
+    return () => subscription.unsubscribe();
+  }, [watch, update]);
 
   const submit = handleSubmit((values) => {
-    update(values as Partial<ApplicationDraft>)
-    onContinue()
-  })
+    update(values as Partial<ApplicationDraft>);
+    onContinue();
+  });
 
   function changeStatus(next: EmploymentStatus) {
-    setValue('employmentStatus', next, { shouldDirty: true })
-    clearErrors()
+    setValue('employmentStatus', next, { shouldDirty: true });
+    clearErrors();
   }
 
   return (
@@ -192,5 +198,5 @@ export default function EmploymentStep({ onContinue }: StepProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

@@ -29,8 +29,8 @@
     "@tailwindcss/vite": "4.3.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "^19.2.0",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "@vitejs/plugin-react": "6.1.0",
     "@vitest/coverage-v8": "^4.1.11",
     "axe-core": "^4.13.0",
@@ -48,7 +48,7 @@
     "react-dropzone": "^20.1.1",
     "signature_pad": "^5.1.4",
     "tailwindcss": "4.3.3",
-    "typescript": "7.0.2",
+    "typescript": "5.8",
     "vite": "8.2.2",
     "vitest": "^4.1.11"
   }

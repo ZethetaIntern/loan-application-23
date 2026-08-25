@@ -1,16 +1,16 @@
-import { useForm, FormProvider } from 'react-hook-form'
-import type { ApplicationData } from './types/application'
-import { WizardProvider, useWizard } from './context/WizardContext'
-import { STEP_DEFINITIONS } from './schemas/stepRegistry'
-import { ProgressBar } from './components/common'
-import { Step1LoanType } from './features/steps/Step1LoanType'
-import { Step2Personal } from './features/steps/Step2Personal'
-import { Step3Kyc } from './features/steps/Step3Kyc'
-import { Step4Address } from './features/steps/Step4Address'
-import { Step5Employment } from './features/steps/Step5Employment'
-import { Step6CoApplicant } from './features/steps/Step6CoApplicant'
-import { Step7Documents } from './features/steps/Step7Documents'
-import { Step8Consents } from './features/steps/Step8Consents'
+import { useForm, FormProvider } from 'react-hook-form';
+import type { ApplicationData } from './types/application';
+import { WizardProvider, useWizard } from './context/WizardContext';
+import { STEP_DEFINITIONS } from './schemas/stepRegistry';
+import { ProgressBar } from './components/common';
+import { Step1LoanType } from './features/steps/Step1LoanType';
+import { Step2Personal } from './features/steps/Step2Personal';
+import { Step3Kyc } from './features/steps/Step3Kyc';
+import { Step4Address } from './features/steps/Step4Address';
+import { Step5Employment } from './features/steps/Step5Employment';
+import { Step6CoApplicant } from './features/steps/Step6CoApplicant';
+import { Step7Documents } from './features/steps/Step7Documents';
+import { Step8Consents } from './features/steps/Step8Consents';
 
 const STEP_COMPONENTS: Record<string, React.FC> = {
   step1: Step1LoanType,
@@ -21,39 +21,44 @@ const STEP_COMPONENTS: Record<string, React.FC> = {
   coApplicant: Step6CoApplicant,
   documents: Step7Documents,
   consents: Step8Consents,
-}
+};
 
 function WizardShell() {
-  const { visibleSteps, stepIndex, data, validationError, next, setStep, patch, submittedRef } = useWizard()
-  const currentStep = visibleSteps[stepIndex]
+  const {
+    visibleSteps, stepIndex, data, validationError, next, setStep, patch, submittedRef,
+  } = useWizard();
+  const currentStep = visibleSteps[stepIndex];
 
   const methods = useForm<ApplicationData>({
     defaultValues: data,
     mode: 'onTouched',
-  })
+  });
 
-  const StepComponent = currentStep ? STEP_COMPONENTS[currentStep.key] : null
+  const StepComponent = currentStep ? STEP_COMPONENTS[currentStep.key] : null;
 
   const handleSubmit = () => {
-    if (!currentStep) return
-    const values = methods.getValues()
-    patch(currentStep.key, values as unknown as Record<string, unknown>)
-    const passed = next()
+    if (!currentStep) return;
+    const values = methods.getValues();
+    patch(currentStep.key, values as unknown as Record<string, unknown>);
+    const passed = next();
     if (!passed) {
-      const err = validationError
-      if (err) methods.setError('root', { message: err.message })
+      const err = validationError;
+      if (err) methods.setError('root', { message: err.message });
     }
-  }
+  };
 
   if (submittedRef) {
     return (
       <div className="mx-auto max-w-2xl py-16 text-center">
         <div className="mb-4 text-5xl">✅</div>
         <h2 className="mb-2 text-2xl font-bold text-gray-900">Application Submitted</h2>
-        <p className="text-gray-600">Reference: <span className="font-mono">{submittedRef}</span></p>
+        <p className="text-gray-600">
+          Reference:
+          <span className="font-mono">{submittedRef}</span>
+        </p>
         <p className="mt-4 text-sm text-gray-500">You will receive a confirmation email shortly.</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -69,7 +74,7 @@ function WizardShell() {
 
         {StepComponent && (
           <FormProvider {...methods}>
-            <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
               <StepComponent />
 
               {validationError && (
@@ -99,7 +104,7 @@ function WizardShell() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default function App() {
@@ -107,5 +112,5 @@ export default function App() {
     <WizardProvider steps={STEP_DEFINITIONS}>
       <WizardShell />
     </WizardProvider>
-  )
+  );
 }

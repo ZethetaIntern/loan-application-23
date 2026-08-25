@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 
 interface SuccessScreenProps {
   onRestart: () => void
@@ -8,7 +8,7 @@ export default function SuccessScreen({ onRestart }: SuccessScreenProps) {
   const reference = useMemo(
     () => `DHB-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`,
     [],
-  )
+  );
 
   return (
     <div className="py-10 text-center" data-testid="success-screen">
@@ -33,5 +33,5 @@ export default function SuccessScreen({ onRestart }: SuccessScreenProps) {
         Nouvelle demande
       </button>
     </div>
-  )
+  );
 }

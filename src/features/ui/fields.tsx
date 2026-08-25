@@ -1,10 +1,9 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react'
-import type { UseFormRegisterReturn } from 'react-hook-form'
+import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react';
+import type { UseFormRegisterReturn } from 'react-hook-form';
 
-const baseControl =
-  'w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-mist/60 focus:border-primary focus:ring-2 focus:ring-primary/20'
-const borderOk = 'border-line'
-const borderError = 'border-red-400 focus:border-red-500 focus:ring-red-100'
+const baseControl = 'w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-mist/60 focus:border-primary focus:ring-2 focus:ring-primary/20';
+const borderOk = 'border-line';
+const borderError = 'border-red-400 focus:border-red-500 focus:ring-red-100';
 
 function FieldShell({
   label,
@@ -33,7 +32,7 @@ function FieldShell({
         <p className="text-mist mt-1.5 text-xs">{hint}</p>
       ) : null}
     </div>
-  )
+  );
 }
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -43,7 +42,9 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   hint?: string
 }
 
-export function TextField({ label, registration, error, hint, ...input }: TextFieldProps) {
+export function TextField({
+  label, registration, error, hint, ...input
+}: TextFieldProps) {
   return (
     <FieldShell label={label} htmlFor={registration.name} error={error} hint={hint}>
       <input
@@ -54,7 +55,7 @@ export function TextField({ label, registration, error, hint, ...input }: TextFi
         {...registration}
       />
     </FieldShell>
-  )
+  );
 }
 
 export function NumberField({
@@ -82,12 +83,12 @@ export function NumberField({
         </span>
       )}
     </div>
-  )
+  );
   return (
     <FieldShell label={label} htmlFor={registration.name} error={error} hint={hint}>
       {control}
     </FieldShell>
-  )
+  );
 }
 
 interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -98,7 +99,9 @@ interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: string; label: string }[]
 }
 
-export function SelectField({ label, registration, error, hint, options, ...select }: SelectFieldProps) {
+export function SelectField({
+  label, registration, error, hint, options, ...select
+}: SelectFieldProps) {
   return (
     <FieldShell label={label} htmlFor={registration.name} error={error} hint={hint}>
       <select
@@ -115,5 +118,5 @@ export function SelectField({ label, registration, error, hint, options, ...sele
         ))}
       </select>
     </FieldShell>
-  )
+  );
 }

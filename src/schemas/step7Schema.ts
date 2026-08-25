@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 export const step7Schema = z.object({
   documents: z
@@ -21,4 +21,4 @@ export const step7Schema = z.object({
       (value) => value.startsWith('data:image/png;base64,'),
       'E-signature must be a PNG image captured from the canvas.',
     ),
-})
+});

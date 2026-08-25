@@ -1,5 +1,5 @@
-import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
+import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 interface SelectProps extends ComponentPropsWithoutRef<'select'> {
   label: string
@@ -12,10 +12,12 @@ interface SelectProps extends ComponentPropsWithoutRef<'select'> {
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ id, name, label, required, error, helpText, options, placeholder, wrapperClassName, className, ...rest }, ref) => {
-    const fieldId = id ?? name
-    const errorId = `${fieldId}-error`
-    const helpId = `${fieldId}-help`
+  ({
+    id, name, label, required, error, helpText, options, placeholder, wrapperClassName, className, ...rest
+  }, ref) => {
+    const fieldId = id ?? name;
+    const errorId = `${fieldId}-error`;
+    const helpId = `${fieldId}-help`;
     return (
       <div className={wrapperClassName}>
         <label htmlFor={fieldId} className="mb-1 block text-sm font-medium text-gray-700">
@@ -48,9 +50,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {helpText && <p id={helpId} className="mt-1 text-sm text-gray-500">{helpText}</p>}
         {error && <p id={errorId} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
-    )
+    );
   },
-)
-Select.displayName = 'Select'
+);
+Select.displayName = 'Select';
 
-export default Select
+export default Select;

@@ -1,24 +1,24 @@
-import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 /* ── Error ─────────────────────────────────────────────────────────── */
 export function ErrorMessage({ id, children }: { id?: string; children: ReactNode }) {
-  if (!children) return null
+  if (!children) return null;
   return (
     <p id={id} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">
       {children}
     </p>
-  )
+  );
 }
 
 /* ── HelpText ──────────────────────────────────────────────────────── */
 export function HelpText({ id, children }: { id?: string; children: ReactNode }) {
-  if (!children) return null
+  if (!children) return null;
   return (
     <p id={id} className="mt-1 text-sm text-gray-500">
       {children}
     </p>
-  )
+  );
 }
 
 /* ── Label ─────────────────────────────────────────────────────────── */
@@ -36,7 +36,7 @@ export function Label({
       {children}
       {required && <span className="ml-0.5 text-red-500" aria-hidden="true">*</span>}
     </label>
-  )
+  );
 }
 
 /* ── Field ─────────────────────────────────────────────────────────── */
@@ -49,10 +49,12 @@ export interface FieldProps extends ComponentPropsWithoutRef<'input'> {
 }
 
 export const InputField = forwardRef<HTMLInputElement, FieldProps>(
-  ({ id, name, label, required, error, helpText, wrapperClassName, className, ...rest }, ref) => {
-    const fieldId = (id ?? name) as string
-    const errorId = `${fieldId}-error`
-    const helpId = `${fieldId}-help`
+  ({
+    id, name, label, required, error, helpText, wrapperClassName, className, ...rest
+  }, ref) => {
+    const fieldId = (id ?? name) as string;
+    const errorId = `${fieldId}-error`;
+    const helpId = `${fieldId}-help`;
     return (
       <div className={wrapperClassName}>
         <Label htmlFor={fieldId} required={required}>
@@ -73,9 +75,11 @@ export const InputField = forwardRef<HTMLInputElement, FieldProps>(
         {helpText && <HelpText id={helpId}>{helpText}</HelpText>}
         <ErrorMessage id={errorId}>{error}</ErrorMessage>
       </div>
-    )
+    );
   },
-)
-InputField.displayName = 'InputField'
+);
+InputField.displayName = 'InputField';
 
-export const Input = { Field: InputField, Label, Error: ErrorMessage, HelpText }
+export const Input = {
+  Field: InputField, Label, Error: ErrorMessage, HelpText,
+};

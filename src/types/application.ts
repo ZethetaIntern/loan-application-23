@@ -6,7 +6,7 @@ import type {
   MaritalStatus,
   Relationship,
   StoredDocument,
-} from './domain'
+} from './domain';
 
 export type VerificationStatus = 'idle' | 'verifying' | 'verified' | 'rejected'
 
@@ -103,4 +103,4 @@ export const LOAN_PURPOSES: Record<LoanType, string[]> = {
   personal: ['Debt consolidation', 'Home renovation', 'Medical expenses', 'Wedding', 'Travel', 'Education', 'Other'],
   home: ['Purchase new home', 'Purchase resale property', 'Construction', 'Extension', 'Balance transfer'],
   business: ['Working capital', 'Equipment purchase', 'Business expansion', 'Inventory financing'],
-}
+};
