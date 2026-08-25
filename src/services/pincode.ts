@@ -50,3 +50,10 @@ export function lookupPinCode(pinCode: string): LookupResult {
   const record = DATASET[value]
   return record ? { found: true, record } : { found: false }
 }
+
+export function usePinCodeLookup(pinCode: string): { found: boolean; city?: string; state?: string; postOffice?: string } {
+  const value = pinCode?.trim() ?? ''
+  if (!/^[1-9][0-9]{5}$/.test(value)) return { found: false }
+  const record = DATASET[value]
+  return record ? { found: true, city: record.city, state: record.state, postOffice: record.postOffice } : { found: false }
+}

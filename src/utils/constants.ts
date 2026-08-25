@@ -55,3 +55,16 @@ export const BANK_STATEMENT_MAX_SIZE_MB = 10
 export const PHOTO_MAX_SIZE_MB = 2
 
 export const PAN_ENTITY_TYPES = ['P', 'C', 'H', 'A', 'B', 'G', 'J', 'L', 'F', 'T'] as const
+
+export const LOAN_PURPOSES: Array<{ value: string; label: string }> = [
+  { value: 'debt_consolidation', label: 'Debt Consolidation' },
+  { value: 'home_renovation', label: 'Home Renovation' },
+  { value: 'medical', label: 'Medical Expenses' },
+  { value: 'wedding', label: 'Wedding' },
+  { value: 'travel', label: 'Travel' },
+  { value: 'education', label: 'Education' },
+  { value: 'business_expansion', label: 'Business Expansion' },
+  { value: 'working_capital', label: 'Working Capital' },
+  { value: 'equipment', label: 'Equipment Purchase' },
+  { value: 'other', label: 'Other' },
+]
