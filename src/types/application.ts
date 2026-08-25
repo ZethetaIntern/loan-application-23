@@ -5,7 +5,6 @@ import type {
   LoanType,
   MaritalStatus,
   Relationship,
-  ResidenceType,
   StoredDocument,
 } from './domain'
 

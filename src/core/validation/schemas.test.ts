@@ -187,7 +187,7 @@ describe('documentsStepSchema', () => {
   let counter = 0
   const doc = (kind: string): StoredDocument => ({
     id: `doc-${++counter}`,
-    kind,
+    kind: kind as StoredDocument['kind'],
     fileName: `${kind}.pdf`,
     originalSizeBytes: 1_000,
     compressedSizeBytes: 400,

@@ -61,7 +61,7 @@ describe('age and tenure coupling', () => {
   it('caps tenure so maturity stays before age 65', () => {
     const cap = maxTenureMonthsByAge('1990-12-31', new Date('2026-01-01'))
     expect(cap).toBe((65 - 35) * 12)
-    expect(tenureWithinAgeLimit('1990-12-31', 300)).toBe(false)
+    expect(tenureWithinAgeLimit('1990-12-31', 480)).toBe(false)
     expect(tenureWithinAgeLimit('1990-12-31', 240)).toBe(true)
   })
 
