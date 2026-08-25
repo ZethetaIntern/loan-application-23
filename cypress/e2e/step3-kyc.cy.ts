@@ -1,6 +1,7 @@
 describe('Step 3 — KYC Verification', () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -23,16 +24,19 @@ describe('Step 3 — KYC Verification', () => {
     cy.get('input[name="pan"]').type('INVALID')
     cy.contains('button', 'Verify PAN').click()
     cy.contains('format AAAAA9999A').should('exist')
+    cy.checkA11y()
   })
 
   it('validates Aadhaar is 12 digits', () => {
     cy.get('input[name="aadhaar"]').type('123')
     cy.contains('button', 'Verify Aadhaar').click()
     cy.contains('12 digits').should('exist')
+    cy.checkA11y()
   })
 
   it('requires Aadhaar consent checkbox', () => {
     cy.contains('button[type="submit"]', 'Save & Next').click()
     cy.contains('Aadhaar consent is mandatory').should('exist')
+    cy.checkA11y()
   })
 })

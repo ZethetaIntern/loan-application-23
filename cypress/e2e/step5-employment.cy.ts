@@ -1,7 +1,7 @@
 describe('Step 5 — Employment & Income', () => {
   beforeEach(() => {
     cy.visit('/')
-    // Fast-forward through steps 1–4
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -36,11 +36,13 @@ describe('Step 5 — Employment & Income', () => {
     cy.contains('label', 'Company Name').should('exist')
     cy.contains('label', 'Designation').should('exist')
     cy.contains('label', 'Monthly Net Salary').should('exist')
+    cy.checkA11y()
   })
 
   it('shows business fields for self-employed', () => {
     cy.contains('label', 'Self-Employed').click()
     cy.contains('label', 'Business Name').should('exist')
     cy.contains('label', 'Annual Turnover').should('exist')
+    cy.checkA11y()
   })
 })

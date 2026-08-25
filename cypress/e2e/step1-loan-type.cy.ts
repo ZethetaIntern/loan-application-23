@@ -1,6 +1,7 @@
 describe('Step 1 — Loan Type & Amount', () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('h2', 'Loan Type & Amount').should('be.visible')
   })
 
@@ -11,6 +12,7 @@ describe('Step 1 — Loan Type & Amount', () => {
     cy.contains('Rate: 8.5%').should('exist')
     cy.contains('label', 'Business').click()
     cy.contains('Rate: 14.0%').should('exist')
+    cy.checkA11y()
   })
 
   it('validates minimum loan amount', () => {
@@ -18,6 +20,7 @@ describe('Step 1 — Loan Type & Amount', () => {
     cy.get('input[name="amount"]').clear().type('10000')
     cy.get('button[type="submit"]').click()
     cy.contains('Minimum loan amount is ₹50,000').should('exist')
+    cy.checkA11y()
   })
 
   it('validates required tenure and purpose', () => {
@@ -25,5 +28,6 @@ describe('Step 1 — Loan Type & Amount', () => {
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('button[type="submit"]').click()
     cy.contains('Loan tenure is required').should('exist')
+    cy.checkA11y()
   })
 })

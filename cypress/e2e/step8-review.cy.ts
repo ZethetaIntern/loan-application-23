@@ -1,6 +1,7 @@
 describe('Step 8 — Review & Consents', () => {
   it('displays application summary with correct data', () => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -33,11 +34,13 @@ describe('Step 8 — Review & Consents', () => {
     cy.contains('h2', 'Review & Consent').should('exist')
     cy.contains('Priya Sharma').should('exist')
     cy.contains('₹2,00,000').should('exist')
+    cy.checkA11y()
   })
 
   it('requires all 4 consents before submission', () => {
     cy.visit('/')
-    // This test verifies the checkboxes exist and are unchecked
+    cy.injectAxe()
     cy.contains('Mandatory Consents').should('exist')
+    cy.checkA11y()
   })
 })

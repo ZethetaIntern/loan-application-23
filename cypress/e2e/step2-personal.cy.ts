@@ -1,6 +1,7 @@
 describe('Step 2 — Personal Information', () => {
   beforeEach(() => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -12,6 +13,7 @@ describe('Step 2 — Personal Information', () => {
   it('validates full name is required', () => {
     cy.get('button[type="submit"]').click()
     cy.contains('Name must be 2–100 letters').should('exist')
+    cy.checkA11y()
   })
 
   it('validates date of birth and age range', () => {
@@ -19,6 +21,7 @@ describe('Step 2 — Personal Information', () => {
     cy.get('input[name="dateOfBirth"]').type('2010-01-01')
     cy.get('button[type="submit"]').click()
     cy.contains('age must be between 21 and 65').should('exist')
+    cy.checkA11y()
   })
 
   it('validates Indian mobile format', () => {
@@ -31,5 +34,6 @@ describe('Step 2 — Personal Information', () => {
     cy.get('input[name="mobile"]').type('1234567890')
     cy.get('button[type="submit"]').click()
     cy.contains('valid 10-digit Indian mobile').should('exist')
+    cy.checkA11y()
   })
 })

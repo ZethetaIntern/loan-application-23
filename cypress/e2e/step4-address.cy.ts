@@ -1,7 +1,7 @@
 describe('Step 4 — Address with PIN Lookup', () => {
   beforeEach(() => {
     cy.visit('/')
-    // Fill steps 1–3 quickly
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -30,16 +30,19 @@ describe('Step 4 — Address with PIN Lookup', () => {
   it('auto-fills city and state from PIN code', () => {
     cy.get('input[name="current.pinCode"]').type('400001')
     cy.contains('Fort, Maharashtra').should('exist')
+    cy.checkA11y()
   })
 
   it('shows rent field when residence type is Rented', () => {
     cy.get('select[name="current.residenceType"]').select('rented')
     cy.contains('label', 'Monthly Rent').should('exist')
+    cy.checkA11y()
   })
 
   it('validates PIN code format', () => {
     cy.get('input[name="current.pinCode"]').type('123')
     cy.get('button[type="submit"]').click()
     cy.contains('PIN code is not recognised').should('exist')
+    cy.checkA11y()
   })
 })

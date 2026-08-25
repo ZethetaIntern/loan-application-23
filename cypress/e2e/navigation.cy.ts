@@ -1,6 +1,7 @@
 describe('Navigation — Back & Forward', () => {
   it('navigates back to Step 1 and changes loan type', () => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -12,10 +13,12 @@ describe('Navigation — Back & Forward', () => {
     cy.contains('h2', 'Loan Type & Amount').should('be.visible')
     cy.contains('label', 'Home').click()
     cy.get('select[name="tenureMonths"]').should('exist')
+    cy.checkA11y()
   })
 
   it('progress bar updates with step navigation', () => {
     cy.visit('/')
+    cy.injectAxe()
     cy.contains('Step 1 of').should('exist')
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
@@ -23,5 +26,6 @@ describe('Navigation — Back & Forward', () => {
     cy.get('select[name="loanPurpose"]').select('debt_consolidation')
     cy.get('button[type="submit"]').click()
     cy.contains('Step 2 of').should('exist')
+    cy.checkA11y()
   })
 })

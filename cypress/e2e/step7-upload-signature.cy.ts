@@ -1,7 +1,7 @@
 describe('File Upload & E-Signature', () => {
   beforeEach(() => {
     cy.visit('/')
-    // Fast-forward through all form steps to Step 7
+    cy.injectAxe()
     cy.contains('label', 'Personal').click()
     cy.get('input[name="amount"]').clear().type('200000')
     cy.get('select[name="tenureMonths"]').select('36')
@@ -29,24 +29,27 @@ describe('File Upload & E-Signature', () => {
     cy.get('input[name="current.pinCode"]').type('400001')
     cy.get('button[type="submit"]').click()
 
-    cy.get('button[type="submit"]').click() // Employment
-    cy.get('button[type="submit"]').click() // Co-applicant (if any)
+    cy.get('button[type="submit"]').click()
+    cy.get('button[type="submit"]').click()
     cy.contains('h2', 'Document Upload').should('exist')
   })
 
   it('shows upload zone with drag and drop area', () => {
     cy.contains('Drop files here').should('exist')
     cy.contains('browse').should('exist')
+    cy.checkA11y()
   })
 
   it('shows signature canvas with clear button', () => {
     cy.contains('E-Signature').should('exist')
     cy.contains('Clear').should('exist')
     cy.contains('Draw your signature above').should('exist')
+    cy.checkA11y()
   })
 
   it('validates signature is required on submit', () => {
     cy.get('button[type="submit"]').click()
     cy.contains('Please capture your e-signature').should('exist')
+    cy.checkA11y()
   })
 })
