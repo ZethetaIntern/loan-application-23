@@ -1,55 +1,71 @@
-# Dhahabi — Plateforme de demande de crédit 🇹🇳
+# LendSwift Loan Application
 
-[![Démo live](https://img.shields.io/badge/%F0%9F%9A%80_D%C3%A9mo_live-hazemmarrakchi.github.io%2Floan--application-0B6B4F?style=for-the-badge)](https://hazemmarrakchi.github.io/loan-application/)
+Multi-step loan application form built with React 19, Vite, Tailwind CSS v4, React Hook Form, and Zod validation.
 
-Parcours de demande de prêt en ligne **production-grade** : 9 étapes, validation temps réel,
-champs conditionnels par type de crédit, documents compressés côté client, signature
-électronique, auto-save avec reprise et pré-approbation instantanée.
+## Features
 
-## Stack
+- 8-step wizard with progressive validation (Step 1–8)
+- Three loan types: Personal, Home, Business — each with unique field requirements
+- PAN/Aadhaar masked input with async verification simulation (Verhoeff checksum)
+- PIN code lookup auto-fills city, state, and post office
+- AES-256-GCM encrypted auto-save with 72-hour TTL
+- E-signature capture via signature_pad
+- File upload with client-side image compression (Canvas API)
+- Co-applicant conditional visibility (home loans, amounts above thresholds)
+- Real-time EMI breakdown calculator
+- Full keyboard navigation and WCAG 2.1 AA accessibility
 
-| Couche | Technologie |
-|---|---|
-| Build | Vite 8 · TypeScript 7 |
-| UI | React 19 · Tailwind CSS v4 |
-| Formulaires | React Hook Form 7 + Zod 4 (schémas divergents par type de prêt) |
-| Documents | browser-image-compression (EXIF-safe, web worker) |
-| E2E | Playwright |
+## Tech Stack
 
-## Démarrage
+- React 19 + TypeScript 7
+- Vite 8
+- Tailwind CSS v4
+- React Hook Form 7 + Zod 4
+- Cypress 15 + cypress-axe
+- Vitest 4 + @vitest/coverage-v8
+- ESLint 8 (Airbnb + Airbnb-TypeScript + jsx-a11y)
+- Web Crypto API (AES-256-GCM for draft encryption)
+
+## Scripts
 
 ```bash
-npm install
-npm run dev        # http://localhost:5173
-npm run build      # vérification TS + bundle production
-npm run preview    # sert dist/ sur http://localhost:4173
-npm run test:e2e   # suite Playwright (5 scénarios)
+npm run dev          # Start dev server
+npm run build        # TypeScript check + production build
+npm test             # Run unit tests
+npm run test:coverage # Run with coverage report
+npm run lint         # ESLint check
+npm run lint:fix     # Auto-fix lint issues
+npx cypress open     # Open Cypress runner
+npx cypress run      # Run E2E tests headless
 ```
 
-## Parcours (9 étapes)
+## Project Structure
 
-1. **Type de prêt** — Personnel / Immobilier / Professionnel (plafonds & taux TND distincts)
-2. **Informations personnelles** — CIN 8 chiffres, majorité 18–100 ans
-3. **Adresse & contact** — autocomplete délégation/gouvernorat/code postal (dataset Tunisie)
-4. **Situation professionnelle** — conditionnel : Salarié (CNSS) / Indépendant (matricule fiscal) / Retraité
-5. **Détails du prêt** — sliders synchronisés, mensualité live, champs propres au type
-6. **Documents** — glisser-déposer, compression automatique (~90 %), aperçus, exigences par type
-7. **KYC simulé** — vérification CIN (+ matricule fiscal RNE si pro)
-8. **Signature électronique** — canvas pointer events (souris/tactile/stylo), annuler/effacer
-9. **Récapitulatif** — décision de pré-approbation (FOIR 40 %), contre-offre éventuelle, soumission
+```
+src/
+├── components/common/   # Reusable UI: Input, Select, RadioGroup, Checkbox, etc.
+├── context/             # WizardContext — state machine for multi-step flow
+├── features/steps/      # Step1–Step8 UI components
+├── hooks/               # useAutoSave custom hook
+├── schemas/             # Zod schemas (step1–step8) + crossstep dependency engine
+├── services/            # EMI calculator, KYC verification, PIN lookup, draft storage
+├── types/               # ApplicationData, domain types
+└── utils/               # Constants, validators, formatters, dates
 
-## Règles métier implémentées
+cypress/
+└── e2e/                 # 10 spec files covering all P0 critical paths
+```
 
-- Capacité de remboursement : échéances totales ≤ 40 % des revenus (FOIR)
-- Crédit immobilier : apport ≥ 10 % du prix, échéance avant 75 ans
-- Crédit professionnel : montant ≤ 50 % du chiffre d'affaires annuel
-- Contre-offre automatique quand le montant demandé dépasse la capacité
+## Business Rules
 
-## Auto-save & reprise
-
-Chaque frappe est persistée (debounce 600 ms) dans `localStorage` sous clé versionnée.
-À la réouverture, une bannière propose de reprendre exactement là où vous vous êtes arrêté.
-
-## Architecture
-
-Voir [PROJECT_MAP.md](./PROJECT_MAP.md) — décisions, structure et jalons.
+| Rule | Detail |
+|---|---|
+| Min loan | ₹50,000 |
+| Max personal | ₹10,00,000 (10L) |
+| Max home | ₹1,00,00,000 (1Cr) |
+| Max business | ₹50,00,000 (50L) |
+| Age range | 21–65 at maturity |
+| Co-applicant | Always for home; personal >5L; business >20L |
+| Rates | Personal 10.5%, Home 8.5%, Business 14% |
+| FOIR limit | 50% |
+| Auto-save | AES-256-GCM, every 30s, 72h TTL |

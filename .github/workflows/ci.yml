@@ -15,6 +15,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm test
       - run: npm run build
@@ -25,7 +26,28 @@ jobs:
           path: dist
           retention-days: 5
 
-  e2e:
+  e2e-cypress:
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx vite preview --port 5173 &
+      - run: npx wait-on http://localhost:5173
+      - run: npx cypress run
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 5
+
+  e2e-playwright:
     runs-on: ubuntu-latest
     needs: verify
     steps:
