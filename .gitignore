@@ -3,6 +3,9 @@ dist
 dist-ssr
 *.local
 .vercel
+cypress/videos
+cypress/screenshots
+cypress/downloads
 
 npm-debug.log*
 yarn-debug.log*
