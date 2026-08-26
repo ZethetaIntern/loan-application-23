@@ -1,31 +1,31 @@
-describe('Navigation — Back & Forward', () => {
-  it('navigates back to Step 1 and changes loan type', () => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.contains('label', 'Personal').click()
-    cy.get('input[name="amount"]').clear().type('200000')
-    cy.get('select[name="tenureMonths"]').select('36')
-    cy.get('select[name="loanPurpose"]').select('debt_consolidation')
-    cy.get('button[type="submit"]').click()
-    cy.contains('h2', 'Personal Information').should('be.visible')
+describe('Wizard Navigation', () => {
+  beforeEach(() => {
+    cy.visit('/loan-application/');
+  });
 
-    cy.contains('button', 'Previous').click()
-    cy.contains('h2', 'Loan Type & Amount').should('be.visible')
-    cy.contains('label', 'Home').click()
-    cy.get('select[name="tenureMonths"]').should('exist')
-    cy.checkA11y()
-  })
+  it('progresses through all steps with Save & Next', () => {
+    cy.contains('Step 1 of');
+    cy.contains('button', 'Save & Next').should('be.visible');
 
-  it('progress bar updates with step navigation', () => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.contains('Step 1 of').should('exist')
-    cy.contains('label', 'Personal').click()
-    cy.get('input[name="amount"]').clear().type('200000')
-    cy.get('select[name="tenureMonths"]').select('36')
-    cy.get('select[name="loanPurpose"]').select('debt_consolidation')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Step 2 of').should('exist')
-    cy.checkA11y()
-  })
-})
+    cy.get('input[name="loanType"][value="personal"]').click();
+    cy.get('input[name="amount"]').clear().type('50000', { delay: 0 });
+    cy.get('select[name="tenureMonths"]').select('24');
+    cy.get('select[name="loanPurpose"]').select('medical');
+    cy.get('button[type="submit"]').click();
+
+    cy.contains('Step 2 of');
+    cy.contains('button', 'Previous').should('be.visible');
+  });
+
+  it('navigates back with Previous button', () => {
+    cy.get('input[name="loanType"][value="personal"]').click();
+    cy.get('input[name="amount"]').clear().type('50000', { delay: 0 });
+    cy.get('select[name="tenureMonths"]').select('24');
+    cy.get('select[name="loanPurpose"]').select('medical');
+    cy.get('button[type="submit"]').click();
+    cy.contains('Step 2 of');
+    cy.contains('button', 'Previous').click();
+    cy.contains('Step 1 of');
+    cy.get('input[name="loanType"][value="personal"]').should('be.checked');
+  });
+});

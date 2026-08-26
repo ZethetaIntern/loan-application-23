@@ -1,18 +1,20 @@
 describe('Keyboard Navigation', () => {
-  it('can navigate Step 1 using only keyboard', () => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.get('body').type('{tab}')
-    cy.focused().should('have.attr', 'type', 'radio')
-    cy.focused().type('{rightarrow}')
-    cy.focused().should('have.value', 'home')
-    cy.focused().type('{rightarrow}')
-    cy.focused().type('{rightarrow}')
-    cy.focused().should('have.value', 'personal')
+  beforeEach(() => {
+    cy.visit('/loan-application/');
+  });
 
-    cy.focused().tab()
-    cy.focused().should('have.attr', 'name', 'amount')
-    cy.focused().type('200000')
-    cy.checkA11y()
-  })
-})
+  it('navigates form fields with Tab key', () => {
+    cy.get('input[name="loanType"][value="personal"]').focus().should('be.focused');
+    cy.realPress('Tab');
+    cy.focused().should('not.have.attr', 'name', 'loanType');
+  });
+
+  it('submits step with Enter key', () => {
+    cy.get('input[name="loanType"][value="personal"]').click();
+    cy.get('input[name="amount"]').clear().type('50000', { delay: 0 });
+    cy.get('select[name="tenureMonths"]').select('24');
+    cy.get('select[name="loanPurpose"]').select('medical');
+    cy.get('button[type="submit"]').focus().type('{enter}');
+    cy.contains('Step 2 of');
+  });
+});

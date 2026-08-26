@@ -6,7 +6,8 @@ type Step7 = ApplicationData['documents']
 
 export function Step7Documents() {
   const { watch, setValue, formState: { errors } } = useFormContext<Step7>();
-  const documents = watch('documents') ?? [];
+  const rawDocuments = watch('documents');
+  const documents = Array.isArray(rawDocuments) ? rawDocuments : [];
 
   return (
     <div className="space-y-8">

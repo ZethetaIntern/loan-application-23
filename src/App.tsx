@@ -25,7 +25,7 @@ const STEP_COMPONENTS: Record<string, React.FC> = {
 
 function WizardShell() {
   const {
-    visibleSteps, stepIndex, data, validationError, next, setStep, patch, submittedRef,
+    visibleSteps, stepIndex, data, validationError, next, setStep, submittedRef,
   } = useWizard();
   const currentStep = visibleSteps[stepIndex];
 
@@ -38,9 +38,24 @@ function WizardShell() {
 
   const handleSubmit = () => {
     if (!currentStep) return;
-    const values = methods.getValues();
-    patch(currentStep.key, values as unknown as Record<string, unknown>);
-    const passed = next();
+    const allValues = methods.getValues();
+    const all = allValues as unknown as Record<string, unknown>;
+    const stepKey = currentStep.key;
+    const stepKeys = visibleSteps.map((s) => s.key);
+    const isEmptyObject = (v: unknown): boolean => !!v && typeof v === 'object' && !Array.isArray(v)
+      && Object.values(v as Record<string, unknown>).every(
+        (x) => x === '' || x === null || x === undefined || (typeof x === 'object' && isEmptyObject(x)),
+      );
+    const stepSlice = Object.fromEntries(
+      Object.entries(all).filter(([key, value]) => {
+        const isStepKey = stepKeys.includes(key);
+        const isOverwrittenField = key === stepKey && (Array.isArray(value) || value === null || typeof value !== 'object');
+        if (isStepKey && !isOverwrittenField) return false;
+        if (isEmptyObject(value)) return false;
+        return true;
+      }),
+    );
+    const passed = next(stepSlice);
     if (!passed) {
       const err = validationError;
       if (err) methods.setError('root', { message: err.message });

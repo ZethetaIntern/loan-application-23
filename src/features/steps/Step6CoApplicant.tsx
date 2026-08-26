@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
 import type { ApplicationData } from '../../types/application';
 import { Select, Input } from '../../components/common';
 import CurrencyInput from '../../components/common/CurrencyInput';
@@ -14,6 +15,13 @@ export function Step6CoApplicant() {
   } = useFormContext<Step6>();
   const { data } = useWizard();
   const panStatus = watch('panStatus');
+
+  useEffect(() => {
+    if (!data.coApplicant.pan) {
+      setValue('pan', '');
+      setValue('panStatus', 'idle');
+    }
+  }, [data.coApplicant.pan, setValue]);
 
   const verifyPan = async () => {
     setValue('panStatus', 'verifying');
@@ -47,7 +55,7 @@ export function Step6CoApplicant() {
       />
 
       <div>
-        <MaskedInput {...register('pan')} name="pan" label="PAN Number" required kind="pan" error={errors.pan?.message} />
+        <MaskedInput name="pan" value={watch('pan') ?? ''} onChange={(e) => setValue('pan', e.target.value, { shouldValidate: true })} label="PAN Number" required kind="pan" error={errors.pan?.message} />
         <div className="mt-2 flex items-center gap-2">
           <button type="button" onClick={verifyPan} disabled={panStatus === 'verifying' || !watch('pan')} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50">
             {panStatus === 'verifying' ? 'Verifying…' : 'Verify PAN'}

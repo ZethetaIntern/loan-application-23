@@ -31,7 +31,7 @@ export interface WizardState {
 
 export interface WizardContextValue extends WizardState {
   patch: (key: string, partial: Record<string, unknown>) => void
-  next: () => boolean
+  next: (stepData?: Record<string, unknown>) => boolean
   setStep: (index: number) => void
   submit: (referenceNumber: string) => void
   startFresh: () => void
@@ -132,20 +132,29 @@ export const WizardProvider = ({
     [],
   );
 
-  const next = useCallback((): boolean => {
+  const next = useCallback((stepData?: Record<string, unknown>): boolean => {
     let passed = false;
     setState((prev) => {
       const step = prev.visibleSteps[prev.stepIndex];
       if (!step) return prev;
+      let { data } = prev;
+      if (stepData) {
+        const { [step.key]: currentSlice } = prev.data as unknown as Record<string, unknown>;
+        data = {
+          ...prev.data,
+          [step.key]: { ...(currentSlice as Record<string, unknown>), ...stepData },
+        } as ApplicationData;
+      }
       try {
-        step.schemaFactory(prev.data).parse((prev.data as unknown as Record<string, unknown>)[step.key]);
+        step.schemaFactory(data).parse((data as unknown as Record<string, unknown>)[step.key]);
         passed = true;
-        const nextIndex = Math.min(prev.stepIndex + 1, prev.visibleSteps.length - 1);
-        return { ...prev, stepIndex: nextIndex, validationError: undefined };
+        const updatedSteps = computeVisible(stepsRef.current, data.step1.loanType, data.step1.amount);
+        const nextIndex = Math.min(prev.stepIndex + 1, updatedSteps.length - 1);
+        return { ...prev, data, visibleSteps: updatedSteps, stepIndex: nextIndex, validationError: undefined };
       } catch (error) {
         const zErr = error as ZodError;
         const message = zErr.issues?.[0]?.message ?? 'Invalid input';
-        return { ...prev, validationError: { stepKey: step.key, message } };
+        return { ...prev, data, validationError: { stepKey: step.key, message } };
       }
     });
     return passed;

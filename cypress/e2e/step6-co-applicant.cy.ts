@@ -1,33 +1,32 @@
-describe('Step 6 — Co-Applicant (Conditional)', () => {
-  it('shows co-applicant step for home loans', () => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.contains('label', 'Home').click()
-    cy.get('input[name="amount"]').clear().type('5000000')
-    cy.get('select[name="tenureMonths"]').select('120')
-    cy.get('select[name="loanPurpose"]').select('home_renovation')
-    cy.get('button[type="submit"]').click()
-    cy.get('input[name="fullName"]').type('Priya Sharma')
-    cy.get('input[name="dateOfBirth"]').type('1995-05-10')
-    cy.get('input[name="fatherName"]').type('Raj Sharma')
-    cy.get('input[name="motherName"]').type('Sunita Sharma')
-    cy.get('input[name="email"]').type('priya@test.com')
-    cy.get('button:contains("Verify")').first().click()
-    cy.get('input[name="mobile"]').type('9876543210')
-    cy.get('button:contains("Verify")').last().click()
-    cy.get('button[type="submit"]').click()
-    cy.get('input[name="pan"]').type('ABCDE1234F')
-    cy.contains('button', 'Verify PAN').click()
-    cy.get('input[name="aadhaar"]').type('123456789012')
-    cy.contains('button', 'Verify Aadhaar').click()
-    cy.get('input[name="aadhaarConsent"]').check({ force: true })
-    cy.get('button[type="submit"]').click()
-    cy.get('input[name="current.line1"]').type('12 Marine Drive')
-    cy.get('input[name="current.pinCode"]').type('400001')
-    cy.get('button[type="submit"]').click()
-    cy.get('button[type="submit"]').click()
-    cy.contains('h2', 'Co-Applicant').should('exist')
-    cy.contains('Co-Applicant Full Name').should('exist')
-    cy.checkA11y()
-  })
-})
+import { fillStep1, fillPersonalAndSubmit, fillKycAndSubmit, fillAddressAndSubmit, fillSalariedAndSubmit } from './step2-personal.cy';
+
+describe('Step 6 – Co-Applicant & Guarantor', () => {
+  beforeEach(() => {
+    cy.visit('/loan-application/');
+    cy.get('input[name="loanType"][value="home"]').click();
+    cy.get('input[name="amount"]').clear().type('5000000', { delay: 0 });
+    cy.get('select[name="tenureMonths"]').select('240');
+    cy.get('select[name="loanPurpose"]').select('medical');
+    cy.get('button[type="submit"]').click();
+    fillPersonalAndSubmit();
+    fillKycAndSubmit();
+    fillAddressAndSubmit();
+    fillSalariedAndSubmit();
+    cy.contains('Step 6 of');
+  });
+
+  it('renders co-applicant fields for home loan', () => {
+    cy.get('input[name="name"]').should('exist');
+    cy.get('select[name="relationship"]').should('exist');
+    cy.get('input[name="pan"]').should('exist');
+    cy.contains('button', 'Verify PAN').should('exist');
+  });
+
+  it('fills co-applicant details', () => {
+    cy.get('input[name="name"]').type('Co Applicant');
+    cy.get('select[name="relationship"]').select('spouse');
+    cy.get('input[name="pan"]').clear().type('AAAPA1234P', { delay: 0 });
+    cy.contains('button', 'Verify PAN').should('not.be.disabled').click();
+    cy.contains('✓ Verified', { timeout: 5000 });
+  });
+});

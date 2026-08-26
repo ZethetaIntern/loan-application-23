@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ApplicationData } from '../../types/application';
 import { Select, Input, Checkbox } from '../../components/common';
 import CurrencyInput from '../../components/common/CurrencyInput';
@@ -9,7 +9,7 @@ type Step4 = ApplicationData['address']
 
 export function Step4Address() {
   const {
-    register, watch, setValue, formState: { errors },
+    register, watch, setValue, unregister, formState: { errors },
   } = useFormContext<Step4>();
   const currentPin = watch('current.pinCode');
   const pinLookup = usePinCodeLookup(currentPin);
@@ -17,6 +17,25 @@ export function Step4Address() {
   const residenceType = watch('current.residenceType');
   const yearsAtAddress = watch('current.yearsAtAddress');
   const [showPrevious, setShowPrevious] = useState(false);
+
+  useEffect(() => {
+    if (pinLookup.found) {
+      if (pinLookup.city) setValue('current.city', pinLookup.city, { shouldValidate: true });
+      if (pinLookup.state) setValue('current.state', pinLookup.state, { shouldValidate: true });
+    }
+  }, [pinLookup.found, pinLookup.city, pinLookup.state, setValue]);
+
+  useEffect(() => {
+    if (sameAsPermanent) {
+      unregister(['permanent.line1', 'permanent.line2', 'permanent.pinCode', 'permanent.city', 'permanent.state'], { keepValue: false });
+    }
+  }, [sameAsPermanent, unregister]);
+
+  useEffect(() => {
+    if (!showPrevious) {
+      unregister(['previous.line1', 'previous.pinCode', 'previous.city', 'previous.state'], { keepValue: false });
+    }
+  }, [showPrevious, unregister]);
 
   return (
     <div className="space-y-6">
@@ -37,8 +56,6 @@ export function Step4Address() {
             error={errors.current?.pinCode?.message}
             helpText={pinLookup?.found ? `${pinLookup.city}, ${pinLookup.state} — ${pinLookup.postOffice}` : undefined}
           />
-          <input type="hidden" {...register('current.city')} value={pinLookup?.city ?? watch('current.city')} />
-          <input type="hidden" {...register('current.state')} value={pinLookup?.state ?? watch('current.state')} />
         </div>
 
         <div className="grid grid-cols-2 gap-4">

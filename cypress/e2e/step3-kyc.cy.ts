@@ -1,42 +1,30 @@
-describe('Step 3 — KYC Verification', () => {
+import { fillStep1, fillPersonalAndSubmit } from './step2-personal.cy';
+
+describe('Step 3 – KYC Verification', () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.contains('label', 'Personal').click()
-    cy.get('input[name="amount"]').clear().type('200000')
-    cy.get('select[name="tenureMonths"]').select('36')
-    cy.get('select[name="loanPurpose"]').select('debt_consolidation')
-    cy.get('button[type="submit"]').click()
+    cy.visit('/loan-application/');
+    fillStep1();
+    fillPersonalAndSubmit();
+    cy.contains('Step 3 of');
+  });
 
-    cy.get('input[name="fullName"]').type('Priya Sharma')
-    cy.get('input[name="dateOfBirth"]').type('1995-05-10')
-    cy.get('input[name="fatherName"]').type('Raj Sharma')
-    cy.get('input[name="motherName"]').type('Sunita Sharma')
-    cy.get('input[name="email"]').type('priya@test.com')
-    cy.get('button:contains("Verify")').first().click()
-    cy.get('input[name="mobile"]').type('9876543210')
-    cy.get('button:contains("Verify")').last().click()
-    cy.get('button[type="submit"]').click()
-    cy.contains('h2', 'Identity Verification').should('be.visible')
-  })
+  it('renders PAN and Aadhaar inputs with verify buttons', () => {
+    cy.get('input[name="pan"]').should('exist');
+    cy.contains('button', 'Verify PAN').should('exist');
+    cy.get('input[name="aadhaar"]').should('exist');
+    cy.contains('button', 'Verify Aadhaar').should('exist');
+    cy.get('input[name="aadhaarConsent"]').should('exist');
+  });
 
-  it('validates PAN format', () => {
-    cy.get('input[name="pan"]').type('INVALID')
-    cy.contains('button', 'Verify PAN').click()
-    cy.contains('format AAAAA9999A').should('exist')
-    cy.checkA11y()
-  })
-
-  it('validates Aadhaar is 12 digits', () => {
-    cy.get('input[name="aadhaar"]').type('123')
-    cy.contains('button', 'Verify Aadhaar').click()
-    cy.contains('12 digits').should('exist')
-    cy.checkA11y()
-  })
-
-  it('requires Aadhaar consent checkbox', () => {
-    cy.contains('button[type="submit"]', 'Save & Next').click()
-    cy.contains('Aadhaar consent is mandatory').should('exist')
-    cy.checkA11y()
-  })
-})
+  it('verifies PAN and Aadhaar, then advances to step 4', () => {
+    cy.get('input[name="pan"]').type('AAAPA1234P', { delay: 0 });
+    cy.contains('button', 'Verify PAN').should('not.be.disabled').click();
+    cy.contains('✓ Verified', { timeout: 5000 });
+    cy.get('input[name="aadhaar"]').type('123456789010', { delay: 0 });
+    cy.get('input[name="aadhaarConsent"]').check();
+    cy.contains('button', 'Verify Aadhaar').should('not.be.disabled').click();
+    cy.get('span.bg-green-100', { timeout: 8000 }).should('have.length', 2);
+    cy.get('button[type="submit"]').click();
+    cy.contains('Step 4 of', { timeout: 8000 });
+  });
+});

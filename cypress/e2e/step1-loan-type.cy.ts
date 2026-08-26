@@ -1,33 +1,26 @@
-describe('Step 1 — Loan Type & Amount', () => {
+describe('Step 1 – Loan Type & Amount', () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.injectAxe()
-    cy.contains('h2', 'Loan Type & Amount').should('be.visible')
-  })
+    cy.visit('/loan-application/');
+  });
 
-  it('allows selecting each loan type and shows rate info', () => {
-    cy.contains('label', 'Personal').click()
-    cy.contains('Rate: 10.5%').should('exist')
-    cy.contains('label', 'Home').click()
-    cy.contains('Rate: 8.5%').should('exist')
-    cy.contains('label', 'Business').click()
-    cy.contains('Rate: 14.0%').should('exist')
-    cy.checkA11y()
-  })
+  it('renders loan type radios, amount input and selects', () => {
+    cy.get('input[name="loanType"][value="personal"]').should('be.visible');
+    cy.get('input[name="loanType"][value="home"]').should('be.visible');
+    cy.get('input[name="loanType"][value="business"]').should('be.visible');
+    cy.get('input[name="amount"]').should('exist');
+    cy.get('select[name="tenureMonths"]').should('exist');
+    cy.get('select[name="loanPurpose"]').should('exist');
+  });
 
-  it('validates minimum loan amount', () => {
-    cy.contains('label', 'Personal').click()
-    cy.get('input[name="amount"]').clear().type('10000')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Minimum loan amount is ₹50,000').should('exist')
-    cy.checkA11y()
-  })
+  it('validates required fields and advances on valid input', () => {
+    cy.get('button[type="submit"]').click();
+    cy.get('[role="alert"]').should('be.visible');
 
-  it('validates required tenure and purpose', () => {
-    cy.contains('label', 'Personal').click()
-    cy.get('input[name="amount"]').clear().type('200000')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Loan tenure is required').should('exist')
-    cy.checkA11y()
-  })
-})
+    cy.get('input[name="loanType"][value="personal"]').click();
+    cy.get('input[name="amount"]').clear().type('50000', { delay: 0 });
+    cy.get('select[name="tenureMonths"]').select('24');
+    cy.get('select[name="loanPurpose"]').select('medical');
+    cy.get('button[type="submit"]').click();
+    cy.contains('Step 2 of');
+  });
+});

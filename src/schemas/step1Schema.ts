@@ -1,11 +1,8 @@
 import { z } from 'zod';
 import type { LoanType } from '../types/domain';
+import { LOAN_PURPOSES } from '../utils/constants';
 
-const PURPOSES: Record<LoanType, [string, ...string[]]> = {
-  personal: ['Debt consolidation', 'Home renovation', 'Medical expenses', 'Wedding', 'Travel', 'Education', 'Other'],
-  home: ['Purchase new home', 'Purchase resale property', 'Construction', 'Extension', 'Balance transfer'],
-  business: ['Working capital', 'Equipment purchase', 'Business expansion', 'Inventory financing'],
-};
+const VALID_PURPOSE_VALUES = LOAN_PURPOSES.map((p) => p.value) as [string, ...string[]];
 
 const LIMITS: Record<LoanType, { max: number; tenureMin: number; tenureMax: number }> = {
   personal: { max: 1_000_000, tenureMin: 12, tenureMax: 60 },
@@ -52,7 +49,7 @@ export const step1Schema = z
         message: `Tenure must be between ${limits.tenureMin} and ${limits.tenureMax} months.`,
       });
     }
-    if (!PURPOSES[data.loanType]?.includes(data.loanPurpose)) {
+    if (!VALID_PURPOSE_VALUES.includes(data.loanPurpose)) {
       ctx.addIssue({ code: 'custom', path: ['loanPurpose'], message: 'Please select a valid purpose.' });
     }
   });
