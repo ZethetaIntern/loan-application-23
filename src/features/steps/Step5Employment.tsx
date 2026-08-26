@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
 import type { ApplicationData } from '../../types/application';
 import { RadioGroup, Input } from '../../components/common';
 import CurrencyInput from '../../components/common/CurrencyInput';
@@ -14,12 +15,23 @@ export function Step5Employment() {
     gstNumber?: string; officeAddress?: string;
   };
   const {
-    register, watch, setValue, formState: { errors },
+    register, watch, setValue, unregister, formState: { errors },
   } = useFormContext<Step5FormValues>();
   const employmentType = watch('employmentType');
   const formValues = useFormContext().getValues() as unknown as ApplicationData;
   const loanType = formValues.step1?.loanType ?? 'personal';
   const allowed = EMPLOYMENT_ALLOWED_BY_LOAN_TYPE[loanType] ?? [];
+
+  useEffect(() => {
+    if (employmentType === 'salaried') {
+      unregister([
+        'businessName', 'businessType', 'annualTurnover',
+        'monthlyBusinessIncome', 'yearsInBusiness', 'gstNumber', 'officeAddress',
+      ], { keepValue: false });
+    } else {
+      unregister(['companyName', 'designation', 'monthlySalary'], { keepValue: false });
+    }
+  }, [employmentType, unregister]);
 
   return (
     <div className="space-y-6">
