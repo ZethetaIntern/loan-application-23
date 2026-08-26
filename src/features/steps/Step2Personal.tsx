@@ -11,14 +11,26 @@ export function Step2Personal() {
   } = useFormContext<Step2>();
   const [emailOtp, setEmailOtp] = useState('');
   const [mobileOtp, setMobileOtp] = useState('');
+  const [emailOtpError, setEmailOtpError] = useState('');
+  const [mobileOtpError, setMobileOtpError] = useState('');
   const emailVerified = watch('emailVerified');
   const mobileOtpVerified = watch('mobileOtpVerified');
 
   const verifyEmail = () => {
-    if (emailOtp === '123456') setValue('emailVerified', true, { shouldValidate: true });
+    if (emailOtp === '123456') {
+      setValue('emailVerified', true, { shouldValidate: true });
+      setEmailOtpError('');
+    } else {
+      setEmailOtpError('Invalid OTP. For this demo, use 123456.');
+    }
   };
   const verifyMobile = () => {
-    if (mobileOtp === '123456') setValue('mobileOtpVerified', true, { shouldValidate: true });
+    if (mobileOtp === '123456') {
+      setValue('mobileOtpVerified', true, { shouldValidate: true });
+      setMobileOtpError('');
+    } else {
+      setMobileOtpError('Invalid OTP. For this demo, use 123456.');
+    }
   };
 
   return (
@@ -68,9 +80,13 @@ export function Step2Personal() {
       <div>
         <Input.Field {...register('email')} label="Email Address" type="email" required error={errors.email?.message} autoComplete="email" />
         {!emailVerified ? (
-          <div className="mt-2 flex gap-2">
-            <input type="text" value={emailOtp} onChange={(e) => setEmailOtp(e.target.value)} placeholder="Enter OTP" className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
-            <button type="button" onClick={verifyEmail} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+          <div className="mt-2">
+            <div className="flex gap-2">
+              <input type="text" value={emailOtp} onChange={(e) => setEmailOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
+              <button type="button" onClick={verifyEmail} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+            </div>
+            <p className="mt-1 text-xs text-gray-400">Demo OTP: 123456</p>
+            {emailOtpError && <p role="alert" className="mt-1 text-sm text-red-600">{emailOtpError}</p>}
           </div>
         ) : (
           <span className="mt-1 inline-block rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>
@@ -81,9 +97,13 @@ export function Step2Personal() {
       <div>
         <Input.Field {...register('mobile')} label="Mobile Number" type="tel" required error={errors.mobile?.message} autoComplete="tel" placeholder="9876543210" />
         {!mobileOtpVerified ? (
-          <div className="mt-2 flex gap-2">
-            <input type="text" value={mobileOtp} onChange={(e) => setMobileOtp(e.target.value)} placeholder="Enter OTP" className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
-            <button type="button" onClick={verifyMobile} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+          <div className="mt-2">
+            <div className="flex gap-2">
+              <input type="text" value={mobileOtp} onChange={(e) => setMobileOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
+              <button type="button" onClick={verifyMobile} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+            </div>
+            <p className="mt-1 text-xs text-gray-400">Demo OTP: 123456</p>
+            {mobileOtpError && <p role="alert" className="mt-1 text-sm text-red-600">{mobileOtpError}</p>}
           </div>
         ) : (
           <span className="mt-1 inline-block rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>
