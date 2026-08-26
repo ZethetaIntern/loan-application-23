@@ -15,7 +15,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const errorId = `${fieldId}-error`;
     return (
       <div className={wrapperClassName}>
-        <label htmlFor={fieldId} className="flex cursor-pointer items-start gap-2 text-sm text-gray-700">
+        <label htmlFor={fieldId} className="flex cursor-pointer items-start gap-2.5 text-sm text-ink">
           <input
             ref={ref}
             type="checkbox"
@@ -23,14 +23,17 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             name={name}
             aria-invalid={!!error || undefined}
             aria-describedby={error ? errorId : undefined}
-            className={`mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 ${className ?? ''}`}
+            className={`mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-mist/60 accent-primary focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/15 ${
+              error ? 'outline outline-red-400' : ''
+            } ${className ?? ''}`}
             {...rest}
           />
-          <span>{label}</span>
+          <span className="leading-relaxed">{label}</span>
         </label>
         {error && (
-          <p id={errorId} role="alert" aria-live="polite" className="ml-6 mt-1 text-sm text-red-600">
-            {error}
+          <p id={errorId} role="alert" aria-live="polite" className="mt-1.5 ml-7 flex items-start gap-1 text-xs font-medium text-red-600">
+            <span aria-hidden="true" className="mt-px">⚠</span>
+            <span>{error}</span>
           </p>
         )}
       </div>

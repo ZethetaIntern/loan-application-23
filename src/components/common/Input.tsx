@@ -1,12 +1,15 @@
 import { forwardRef } from 'react';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
+const FIELD_BASE = 'w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-mist/60 transition-colors duration-200 hover:border-mist/50 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15';
+
 /* ── Error ─────────────────────────────────────────────────────────── */
 export function ErrorMessage({ id, children }: { id?: string; children: ReactNode }) {
   if (!children) return null;
   return (
-    <p id={id} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">
-      {children}
+    <p id={id} role="alert" aria-live="polite" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600">
+      <span aria-hidden="true" className="mt-px">⚠</span>
+      <span>{children}</span>
     </p>
   );
 }
@@ -15,7 +18,7 @@ export function ErrorMessage({ id, children }: { id?: string; children: ReactNod
 export function HelpText({ id, children }: { id?: string; children: ReactNode }) {
   if (!children) return null;
   return (
-    <p id={id} className="mt-1 text-sm text-gray-500">
+    <p id={id} className="mt-1.5 text-xs text-mist">
       {children}
     </p>
   );
@@ -32,7 +35,7 @@ export function Label({
   children: ReactNode
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1 block text-sm font-medium text-gray-700">
+    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-ink">
       {children}
       {required && <span className="ml-0.5 text-red-500" aria-hidden="true">*</span>}
     </label>
@@ -67,9 +70,7 @@ export const InputField = forwardRef<HTMLInputElement, FieldProps>(
           aria-required={required || undefined}
           aria-invalid={!!error || undefined}
           aria-describedby={[error ? errorId : null, helpText ? helpId : null].filter(Boolean).join(' ') || undefined}
-          className={`w-full rounded border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-            error ? 'border-red-500' : 'border-gray-300'
-          } ${className ?? ''}`}
+          className={`${FIELD_BASE} ${error ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-line'} ${className ?? ''}`}
           {...rest}
         />
         {helpText && <HelpText id={helpId}>{helpText}</HelpText>}

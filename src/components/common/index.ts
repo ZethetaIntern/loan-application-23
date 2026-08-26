@@ -10,3 +10,4 @@ export { default as MaskedInput } from './MaskedInput';
 export { FileUpload } from './FileUpload';
 export { SignatureCanvas } from './SignatureCanvas';
 export { ProgressBar } from './ProgressBar';
+export { Logo } from './Logo';

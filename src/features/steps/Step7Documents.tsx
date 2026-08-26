@@ -19,8 +19,8 @@ export function Step7Documents() {
       />
 
       <div>
-        <h3 className="mb-2 text-sm font-medium text-gray-700">E-Signature</h3>
-        <p className="mb-3 text-xs text-gray-500">
+        <h3 className="mb-2 font-display text-sm font-semibold text-ink">E-Signature</h3>
+        <p className="mb-3 text-xs text-mist">
           Draw your signature in the box below. This will be used on your loan application.
         </p>
         <SignatureCanvas

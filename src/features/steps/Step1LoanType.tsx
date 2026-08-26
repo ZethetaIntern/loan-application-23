@@ -84,28 +84,24 @@ export function Step1LoanType() {
       />
 
       {breakdown && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm">
-          <h4 className="mb-2 font-medium text-gray-700">EMI Breakdown</h4>
-          <div className="grid grid-cols-2 gap-2">
-            <div>Monthly EMI</div>
-            <div className="font-medium">
-              ₹
-              {breakdown.emi.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+        <div className="rounded-xl border border-line bg-primary-soft/30 p-4 text-sm">
+          <h4 className="mb-2 font-display font-semibold text-ink">EMI Breakdown</h4>
+          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+            <div className="text-mist">Monthly EMI</div>
+            <div className="font-semibold text-ink text-right">
+              ₹{breakdown.emi.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
             </div>
-            <div>Total Interest</div>
-            <div className="font-medium">
-              ₹
-              {breakdown.totalCostOfBorrowing.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            <div className="text-mist">Total Interest</div>
+            <div className="font-semibold text-ink text-right">
+              ₹{breakdown.totalCostOfBorrowing.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
             </div>
-            <div>Total Payable</div>
-            <div className="font-medium">
-              ₹
-              {(amount + breakdown.totalCostOfBorrowing).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            <div className="text-mist">Total Payable</div>
+            <div className="font-semibold text-primary text-right">
+              ₹{(amount + breakdown.totalCostOfBorrowing).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
             </div>
-            <div>Processing Fee</div>
-            <div className="font-medium">
-              ₹
-              {breakdown.processingFee.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            <div className="text-mist">Processing Fee</div>
+            <div className="font-semibold text-ink text-right">
+              ₹{breakdown.processingFee.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
             </div>
           </div>
         </div>

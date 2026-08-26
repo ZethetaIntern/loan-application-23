@@ -81,15 +81,15 @@ export function Step2Personal() {
         <Input.Field {...register('email')} label="Email Address" type="email" required error={errors.email?.message} autoComplete="email" />
         {!emailVerified ? (
           <div className="mt-2">
-            <div className="flex gap-2">
-              <input type="text" value={emailOtp} onChange={(e) => setEmailOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
-              <button type="button" onClick={verifyEmail} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+            <div className="flex items-center gap-2">
+              <input type="text" value={emailOtp} onChange={(e) => setEmailOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded-xl border border-line bg-white px-3 py-2 text-sm font-mono tracking-widest text-ink placeholder:font-sans placeholder:tracking-normal placeholder:text-mist/60 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15" />
+              <button type="button" onClick={verifyEmail} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-deep active:scale-[0.98]">Verify</button>
             </div>
-            <p className="mt-1 text-xs text-gray-400">Demo OTP: 123456</p>
-            {emailOtpError && <p role="alert" className="mt-1 text-sm text-red-600">{emailOtpError}</p>}
+            <p className="mt-1.5 text-xs text-mist">Demo OTP: 123456</p>
+            {emailOtpError && <p role="alert" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600"><span aria-hidden="true">⚠</span><span>{emailOtpError}</span></p>}
           </div>
         ) : (
-          <span className="mt-1 inline-block rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>
+          <span className="mt-1.5 inline-block rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-semibold text-primary">✓ Verified</span>
         )}
         {errors.emailVerified && <p role="alert" className="mt-1 text-sm text-red-600">{errors.emailVerified.message}</p>}
       </div>
@@ -98,15 +98,15 @@ export function Step2Personal() {
         <Input.Field {...register('mobile')} label="Mobile Number" type="tel" required error={errors.mobile?.message} autoComplete="tel" placeholder="9876543210" />
         {!mobileOtpVerified ? (
           <div className="mt-2">
-            <div className="flex gap-2">
-              <input type="text" value={mobileOtp} onChange={(e) => setMobileOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded border border-gray-300 px-2 py-1 text-sm" />
-              <button type="button" onClick={verifyMobile} className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700">Verify</button>
+            <div className="flex items-center gap-2">
+              <input type="text" value={mobileOtp} onChange={(e) => setMobileOtp(e.target.value)} placeholder="Enter OTP" maxLength={6} className="w-32 rounded-xl border border-line bg-white px-3 py-2 text-sm font-mono tracking-widest text-ink placeholder:font-sans placeholder:tracking-normal placeholder:text-mist/60 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15" />
+              <button type="button" onClick={verifyMobile} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-deep active:scale-[0.98]">Verify</button>
             </div>
-            <p className="mt-1 text-xs text-gray-400">Demo OTP: 123456</p>
-            {mobileOtpError && <p role="alert" className="mt-1 text-sm text-red-600">{mobileOtpError}</p>}
+            <p className="mt-1.5 text-xs text-mist">Demo OTP: 123456</p>
+            {mobileOtpError && <p role="alert" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600"><span aria-hidden="true">⚠</span><span>{mobileOtpError}</span></p>}
           </div>
         ) : (
-          <span className="mt-1 inline-block rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>
+          <span className="mt-1.5 inline-block rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-semibold text-primary">✓ Verified</span>
         )}
         {errors.mobileOtpVerified && <p role="alert" className="mt-1 text-sm text-red-600">{errors.mobileOtpVerified.message}</p>}
       </div>

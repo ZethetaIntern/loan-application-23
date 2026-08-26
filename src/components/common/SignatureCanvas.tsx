@@ -49,7 +49,7 @@ export function SignatureCanvas({
 
   return (
     <div>
-      <div className="relative overflow-hidden rounded border border-gray-300" style={{ width, height }}>
+      <div className="relative overflow-hidden rounded-xl border border-line bg-white" style={{ width, height }}>
         <canvas
           ref={initPad}
           width={width}
@@ -61,20 +61,23 @@ export function SignatureCanvas({
           <img src={value} alt="Saved signature" className="absolute inset-0 h-full w-full object-contain opacity-30" />
         )}
       </div>
-      <div className="mt-2 flex gap-2">
+      <div className="mt-2 flex items-center gap-2">
         <button
           type="button"
           onClick={clear}
-          className="rounded bg-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-300"
+          className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-medium text-mist transition-colors duration-200 hover:bg-surface hover:text-ink"
         >
           Clear
         </button>
         {isEmpty && !value && (
-          <span className="self-center text-xs text-gray-400">Draw your signature above</span>
+          <span className="self-center text-xs text-mist">Draw your signature above</span>
         )}
       </div>
       {error && (
-        <p role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>
+        <p role="alert" aria-live="polite" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600">
+          <span aria-hidden="true" className="mt-px">⚠</span>
+          <span>{error}</span>
+        </p>
       )}
     </div>
   );

@@ -40,7 +40,7 @@ export function Step4Address() {
   return (
     <div className="space-y-6">
       <fieldset className="space-y-4">
-        <legend className="text-base font-semibold text-gray-900">Current Address</legend>
+        <legend className="font-display text-base font-semibold text-ink">Current Address</legend>
 
         <Input.Field {...register('current.line1')} label="Address Line 1" required error={errors.current?.line1?.message} autoComplete="address-line1" />
         <Input.Field {...register('current.line2')} label="Address Line 2" error={errors.current?.line2?.message} autoComplete="address-line2" />
@@ -112,7 +112,7 @@ export function Step4Address() {
 
       {showPrevious && (
         <fieldset className="space-y-4">
-          <legend className="text-base font-semibold text-gray-900">Previous Address</legend>
+          <legend className="font-display text-base font-semibold text-ink">Previous Address</legend>
           <Input.Field {...register('previous.line1')} label="Address Line 1" required error={errors.previous?.line1?.message} />
           <Input.Field {...register('previous.pinCode')} label="PIN Code" required maxLength={6} inputMode="numeric" error={errors.previous?.pinCode?.message} />
           <div className="grid grid-cols-2 gap-4">
@@ -132,7 +132,7 @@ export function Step4Address() {
 
       {!sameAsPermanent && (
         <fieldset className="space-y-4">
-          <legend className="text-base font-semibold text-gray-900">Permanent Address</legend>
+          <legend className="font-display text-base font-semibold text-ink">Permanent Address</legend>
           <Input.Field {...register('permanent.line1')} label="Address Line 1" required error={errors.permanent?.line1?.message} />
           <Input.Field {...register('permanent.pinCode')} label="PIN Code" required maxLength={6} inputMode="numeric" error={errors.permanent?.pinCode?.message} />
           <div className="grid grid-cols-2 gap-4">

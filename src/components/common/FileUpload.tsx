@@ -110,44 +110,59 @@ export function FileUpload({
 
   return (
     <div>
-      <p className="mb-1 block text-sm font-medium text-gray-700">{label}</p>
+      <p className="mb-1.5 block text-sm font-medium text-ink">{label}</p>
       <div
         {...getRootProps()}
         role="button"
         tabIndex={0}
         aria-label="Drop files here or click to browse"
-        className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition ${
-          isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'
-        } ${documents.length >= maxFiles ? 'cursor-not-allowed opacity-50' : ''}`}
+        className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${
+          isDragActive
+            ? 'border-primary bg-primary-soft/50 scale-[1.01]'
+            : documents.length >= maxFiles
+              ? 'cursor-not-allowed border-line opacity-50'
+              : 'border-mist/40 hover:border-primary/60 hover:bg-primary-soft/20'
+        }`}
       >
         <input {...getInputProps()} />
         {busy ? (
-          <p className="text-sm text-gray-500">Compressing…</p>
+          <p className="text-sm font-medium text-mist">Compressing…</p>
         ) : (
           <>
-            <p className="text-sm text-gray-600">
-              Drag & drop files here, or
+            <span aria-hidden="true" className="mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-primary-soft text-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V4m0 0l-4 4m4-4l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </span>
+            <p className="text-sm text-ink">
+              Drag &amp; drop files here, or
               {' '}
-              <span className="text-blue-600 underline">browse</span>
+              <span className="font-semibold text-primary underline underline-offset-2">browse</span>
             </p>
-            <p className="mt-1 text-xs text-gray-400">PDF, JPG, PNG — Max 10 MB each</p>
+            <p className="mt-1 text-xs text-mist">PDF, JPG, PNG — Max 10 MB each</p>
           </>
         )}
       </div>
-      {error && <p role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" aria-live="polite" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600">
+          <span aria-hidden="true" className="mt-px">⚠</span>
+          <span>{error}</span>
+        </p>
+      )}
 
       {documents.length > 0 && (
         <ul className="mt-3 space-y-2" aria-label="Uploaded files">
           {documents.map((doc) => (
-            <li key={doc.id} className="flex items-center gap-3 rounded border border-gray-200 p-2 text-sm">
+            <li key={doc.id} className="flex items-center gap-3 rounded-xl border border-line bg-white p-2.5 text-sm">
               {doc.dataUrl.startsWith('data:image') ? (
-                <img src={doc.dataUrl} alt={doc.fileName} className="h-10 w-10 rounded object-cover" />
+                <img src={doc.dataUrl} alt={doc.fileName} className="h-10 w-10 rounded-lg object-cover" />
               ) : (
-                <div className="flex h-10 w-10 items-center justify-center rounded bg-red-100 text-xs font-bold text-red-600">PDF</div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-50 text-xs font-bold text-red-600">PDF</div>
               )}
-              <div className="flex-1 truncate">
-                <p className="truncate font-medium">{doc.fileName}</p>
-                <p className="text-xs text-gray-400">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium text-ink">{doc.fileName}</p>
+                <p className="text-xs text-mist">
                   {sizeLabel(doc.originalSizeBytes)}
                   {doc.compressedSizeBytes < doc.originalSizeBytes && (
                     <>
@@ -163,7 +178,7 @@ export function FileUpload({
               <button
                 type="button"
                 onClick={() => removeDoc(doc.id)}
-                className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                className="rounded-lg p-1.5 text-mist transition-colors duration-200 hover:bg-red-50 hover:text-red-600"
                 aria-label={`Remove ${doc.fileName}`}
               >
                 ✕

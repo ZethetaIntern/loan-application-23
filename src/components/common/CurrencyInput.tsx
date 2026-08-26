@@ -29,12 +29,12 @@ const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
 
     return (
       <div className={wrapperClassName}>
-        <label htmlFor={fieldId} className="mb-1 block text-sm font-medium text-gray-700">
+        <label htmlFor={fieldId} className="mb-1.5 block text-sm font-medium text-ink">
           {label}
           {required && <span className="ml-0.5 text-red-500" aria-hidden="true">*</span>}
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">₹</span>
+          <span className="absolute top-1/2 left-3.5 -translate-y-1/2 text-sm font-medium text-mist">₹</span>
           <input
             ref={ref}
             id={fieldId}
@@ -47,15 +47,20 @@ const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
             aria-describedby={[error ? errorId : null, helpText ? helpId : null].filter(Boolean).join(' ') || undefined}
             value={displayValue}
             onChange={handleChange}
-            className={`w-full rounded border py-2 pl-7 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-              error ? 'border-red-500' : 'border-gray-300'
+            className={`w-full rounded-xl border bg-white py-2.5 pr-3.5 pl-8 text-sm text-ink transition-colors duration-200 hover:border-mist/50 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 ${
+              error ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-line'
             } ${className ?? ''}`}
-            placeholder="₹ 0"
+            placeholder="0"
             {...rest}
           />
         </div>
-        {helpText && <p id={helpId} className="mt-1 text-sm text-gray-500">{helpText}</p>}
-        {error && <p id={errorId} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
+        {helpText && <p id={helpId} className="mt-1.5 text-xs text-mist">{helpText}</p>}
+        {error && (
+          <p id={errorId} role="alert" aria-live="polite" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600">
+            <span aria-hidden="true" className="mt-px">⚠</span>
+            <span>{error}</span>
+          </p>
+        )}
       </div>
     );
   },

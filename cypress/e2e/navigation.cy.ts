@@ -5,7 +5,7 @@ describe('Wizard Navigation', () => {
 
   it('progresses through all steps with Save & Next', () => {
     cy.contains('Step 1 of');
-    cy.contains('button', 'Save & Next').should('be.visible');
+    cy.contains('button', 'Save & Continue').should('be.visible');
 
     cy.get('input[name="loanType"][value="personal"]').click();
     cy.get('input[name="amount"]').clear().type('50000', { delay: 0 });

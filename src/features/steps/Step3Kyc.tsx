@@ -34,7 +34,7 @@ export function Step3Kyc() {
       <div>
         <MaskedInput name="pan" value={watch('pan') ?? ''} onChange={(e) => setValue('pan', e.target.value, { shouldValidate: true })} label="PAN Number" required kind="pan" error={errors.pan?.message} helpText="Format: AAAAA9999A" />
         <div className="mt-2 flex items-center gap-2">
-          <button type="button" onClick={verifyPan} disabled={panStatus === 'verifying' || !watch('pan')} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50">
+          <button type="button" onClick={verifyPan} disabled={panStatus === 'verifying' || !watch('pan')} className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-deep disabled:opacity-50 active:scale-[0.98]">
             {panStatus === 'verifying' ? 'Verifying…' : 'Verify PAN'}
           </button>
           {panStatus === 'verified' && <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>}
@@ -46,7 +46,7 @@ export function Step3Kyc() {
       <div>
         <MaskedInput name="aadhaar" value={watch('aadhaar') ?? ''} onChange={(e) => setValue('aadhaar', e.target.value, { shouldValidate: true })} label="Aadhaar Number" required kind="aadhaar" error={errors.aadhaar?.message} helpText="12 digits" />
         <div className="mt-2 flex items-center gap-2">
-          <button type="button" onClick={verifyAadhaar} disabled={aadhaarStatus === 'verifying' || !watch('aadhaar')} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50">
+          <button type="button" onClick={verifyAadhaar} disabled={aadhaarStatus === 'verifying' || !watch('aadhaar')} className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-deep disabled:opacity-50 active:scale-[0.98]">
             {aadhaarStatus === 'verifying' ? 'Verifying…' : 'Verify Aadhaar'}
           </button>
           {aadhaarStatus === 'verified' && <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>}

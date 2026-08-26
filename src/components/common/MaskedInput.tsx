@@ -32,7 +32,7 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
 
     return (
       <div className={wrapperClassName}>
-        <label htmlFor={fieldId} className="mb-1 block text-sm font-medium text-gray-700">
+        <label htmlFor={fieldId} className="mb-1.5 block text-sm font-medium text-ink">
           {label}
           {required && <span className="ml-0.5 text-red-500" aria-hidden="true">*</span>}
         </label>
@@ -48,13 +48,18 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
           value={display}
           onChange={handleChange}
           placeholder={PATTERNS[kind]}
-          className={`w-full rounded border px-3 py-2 text-sm font-mono uppercase tracking-widest focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-            error ? 'border-red-500' : 'border-gray-300'
+          className={`w-full rounded-xl border bg-white px-3.5 py-2.5 font-mono text-sm tracking-widest text-ink uppercase transition-colors duration-200 placeholder:font-sans placeholder:tracking-normal placeholder:text-mist/60 hover:border-mist/50 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 ${
+            error ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-line'
           } ${className ?? ''}`}
           {...rest}
         />
-        {helpText && <p id={helpId} className="mt-1 text-sm text-gray-500">{helpText}</p>}
-        {error && <p id={errorId} role="alert" aria-live="polite" className="mt-1 text-sm text-red-600">{error}</p>}
+        {helpText && <p id={helpId} className="mt-1.5 text-xs text-mist">{helpText}</p>}
+        {error && (
+          <p id={errorId} role="alert" aria-live="polite" className="mt-1.5 flex items-start gap-1 text-xs font-medium text-red-600">
+            <span aria-hidden="true" className="mt-px">⚠</span>
+            <span>{error}</span>
+          </p>
+        )}
       </div>
     );
   },

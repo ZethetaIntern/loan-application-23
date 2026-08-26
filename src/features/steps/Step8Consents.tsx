@@ -21,44 +21,44 @@ export function Step8Consents() {
   return (
     <div className="space-y-8">
       <section>
-        <h3 className="mb-3 text-base font-semibold text-gray-900">Application Summary</h3>
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm">
-          <dl className="grid grid-cols-2 gap-y-2">
-            <dt className="text-gray-500">Loan Type</dt>
-            <dd className="font-medium capitalize">{step1.loanType}</dd>
-            <dt className="text-gray-500">Amount</dt>
-            <dd className="font-medium">{formatRupees(step1.amount)}</dd>
-            <dt className="text-gray-500">Tenure</dt>
-            <dd className="font-medium">
+        <h3 className="mb-3 font-display text-base font-semibold text-ink">Application Summary</h3>
+        <div className="rounded-xl border border-line bg-primary-soft/30 p-4 text-sm">
+          <dl className="grid grid-cols-2 gap-y-2.5 gap-x-4">
+            <dt className="text-mist">Loan Type</dt>
+            <dd className="font-semibold capitalize text-ink">{step1.loanType}</dd>
+            <dt className="text-mist">Amount</dt>
+            <dd className="font-semibold text-ink">{formatRupees(step1.amount)}</dd>
+            <dt className="text-mist">Tenure</dt>
+            <dd className="font-semibold text-ink">
               {step1.tenureMonths}
               {' '}
               months
             </dd>
-            <dt className="text-gray-500">Purpose</dt>
-            <dd className="font-medium">{step1.loanPurpose}</dd>
-            <dt className="text-gray-500">Applicant</dt>
-            <dd className="font-medium">{personal.fullName}</dd>
-            <dt className="text-gray-500">Email</dt>
-            <dd className="font-medium">{personal.email}</dd>
-            <dt className="text-gray-500">Mobile</dt>
-            <dd className="font-medium">{personal.mobile}</dd>
-            <dt className="text-gray-500">PAN</dt>
-            <dd className="font-medium">{kyc.pan}</dd>
-            <dt className="text-gray-500">Employment</dt>
-            <dd className="font-medium capitalize">{employment.employmentType?.replace('_', ' ')}</dd>
+            <dt className="text-mist">Purpose</dt>
+            <dd className="font-semibold text-ink">{step1.loanPurpose}</dd>
+            <dt className="text-mist">Applicant</dt>
+            <dd className="font-semibold text-ink">{personal.fullName}</dd>
+            <dt className="text-mist">Email</dt>
+            <dd className="font-semibold text-ink">{personal.email}</dd>
+            <dt className="text-mist">Mobile</dt>
+            <dd className="font-semibold text-ink">{personal.mobile}</dd>
+            <dt className="text-mist">PAN</dt>
+            <dd className="font-mono font-semibold tracking-wide text-ink">{kyc.pan}</dd>
+            <dt className="text-mist">Employment</dt>
+            <dd className="font-semibold capitalize text-ink">{employment.employmentType?.replace('_', ' ')}</dd>
           </dl>
           {breakdown && (
-            <div className="mt-4 border-t border-gray-200 pt-4">
-              <h4 className="mb-2 font-medium text-gray-700">EMI Breakdown</h4>
-              <dl className="grid grid-cols-2 gap-y-1">
-                <dt className="text-gray-500">Monthly EMI</dt>
-                <dd className="font-medium">{formatRupees(breakdown.emi)}</dd>
-                <dt className="text-gray-500">Total Interest</dt>
-                <dd className="font-medium">{formatRupees(breakdown.totalCostOfBorrowing)}</dd>
-                <dt className="text-gray-500">Total Payable</dt>
-                <dd className="font-medium">{formatRupees(step1.amount + breakdown.totalCostOfBorrowing)}</dd>
-                <dt className="text-gray-500">Processing Fee</dt>
-                <dd className="font-medium">{formatRupees(breakdown.processingFee)}</dd>
+            <div className="mt-4 border-t border-line pt-4">
+              <h4 className="mb-2 font-display font-semibold text-ink">EMI Breakdown</h4>
+              <dl className="grid grid-cols-2 gap-y-1.5 gap-x-4">
+                <dt className="text-mist">Monthly EMI</dt>
+                <dd className="font-semibold text-ink">{formatRupees(breakdown.emi)}</dd>
+                <dt className="text-mist">Total Interest</dt>
+                <dd className="font-semibold text-ink">{formatRupees(breakdown.totalCostOfBorrowing)}</dd>
+                <dt className="text-mist">Total Payable</dt>
+                <dd className="font-semibold text-primary">{formatRupees(step1.amount + breakdown.totalCostOfBorrowing)}</dd>
+                <dt className="text-mist">Processing Fee</dt>
+                <dd className="font-semibold text-ink">{formatRupees(breakdown.processingFee)}</dd>
               </dl>
             </div>
           )}
@@ -67,13 +67,13 @@ export function Step8Consents() {
 
       {data.documents.signatureDataUrl && (
         <section>
-          <h3 className="mb-2 text-sm font-medium text-gray-700">E-Signature</h3>
-          <img src={data.documents.signatureDataUrl} alt="Your signature" className="h-16 border border-gray-200 bg-white p-1" />
+          <h3 className="mb-2 text-sm font-medium text-ink">E-Signature</h3>
+          <img src={data.documents.signatureDataUrl} alt="Your signature" className="h-16 rounded-xl border border-line bg-white p-1" />
         </section>
       )}
 
       <section className="space-y-3">
-        <h3 className="text-base font-semibold text-gray-900">Mandatory Consents</h3>
+        <h3 className="font-display text-base font-semibold text-ink">Mandatory Consents</h3>
         <Checkbox
           {...register('accuracy')}
           name="accuracy"

@@ -32,7 +32,7 @@ export function Step6CoApplicant() {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-mist">
         A co-applicant is required for home loans and loans above ₹5L (personal) / ₹20L (business).
       </p>
 
@@ -57,7 +57,7 @@ export function Step6CoApplicant() {
       <div>
         <MaskedInput name="pan" value={watch('pan') ?? ''} onChange={(e) => setValue('pan', e.target.value, { shouldValidate: true })} label="PAN Number" required kind="pan" error={errors.pan?.message} />
         <div className="mt-2 flex items-center gap-2">
-          <button type="button" onClick={verifyPan} disabled={panStatus === 'verifying' || !watch('pan')} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50">
+          <button type="button" onClick={verifyPan} disabled={panStatus === 'verifying' || !watch('pan')} className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-deep disabled:opacity-50 active:scale-[0.98]">
             {panStatus === 'verifying' ? 'Verifying…' : 'Verify PAN'}
           </button>
           {panStatus === 'verified' && <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">✓ Verified</span>}
