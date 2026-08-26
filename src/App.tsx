@@ -25,7 +25,7 @@ const STEP_COMPONENTS: Record<string, React.FC> = {
 
 function WizardShell() {
   const {
-    visibleSteps, stepIndex, data, validationError, next, setStep, submittedRef,
+    visibleSteps, stepIndex, data, validationError, next, setStep, submit, submittedRef,
   } = useWizard();
   const currentStep = visibleSteps[stepIndex];
 
@@ -55,6 +55,21 @@ function WizardShell() {
         return true;
       }),
     );
+    const isLastStep = stepIndex === visibleSteps.length - 1;
+    if (isLastStep) {
+      let valid = true;
+      try {
+        currentStep.schemaFactory(data).parse(stepSlice);
+      } catch {
+        valid = false;
+      }
+      if (valid) {
+        submit(crypto.randomUUID());
+      } else {
+        next(stepSlice);
+      }
+      return;
+    }
     const passed = next(stepSlice);
     if (!passed) {
       const err = validationError;

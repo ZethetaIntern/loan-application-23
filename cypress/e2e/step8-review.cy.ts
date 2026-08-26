@@ -45,4 +45,21 @@ describe('Step 8 – Review & Consent', () => {
     cy.get('input[name="communications"]').check();
     cy.contains('button', 'Submit Application').should('not.be.disabled');
   });
+
+  it('submits the application and shows the reference number', () => {
+    cy.get('input[name="accuracy"]').check();
+    cy.get('input[name="creditCheck"]').check();
+    cy.get('input[name="terms"]').check();
+    cy.get('input[name="communications"]').check();
+    cy.contains('button', 'Submit Application').click();
+    cy.contains('Application Submitted', { timeout: 8000 });
+    cy.get('span.font-mono').invoke('text').should('have.length', 36);
+  });
+
+  it('blocks submission when consents are missing', () => {
+    cy.get('input[name="accuracy"]').check();
+    cy.contains('button', 'Submit Application').click();
+    cy.contains('Please authorise LendSwift to check your credit score.', { timeout: 8000 });
+    cy.contains('Application Submitted').should('not.exist');
+  });
 });
